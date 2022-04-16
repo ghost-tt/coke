@@ -162,12 +162,12 @@ function insertFavouriteProducts() {
             <div class="product-card">
                 <div class="product-tumb favourite">
                     <div class="innerbox favourite">
-                        <embed src=${item.icon} />
+                        <embed src=${item.images} />
                     </div>
                 </div>
                 <div class="product__details inner">
                     <div class="product__text__wrapper">
-                        <p class="product__name">${item.name}</p>
+                        <p class="product__name">${item.product_name}</p>
                         <p class="product__quantity">${item.description}</p>
                         <p class="product__price">$${item.price}</p>
                     </div>
