@@ -1,4 +1,7 @@
-function loadPageContent(page) {
+var config = {};
+
+function loadPageContent(page, data) {
+    config = data;
     if (page === "homepage") {
         insertSearchBar();
         insertTabContainer();
