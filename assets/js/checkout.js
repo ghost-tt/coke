@@ -1,6 +1,6 @@
 var config = {};
 
-function loadCheckoutPageContent(page) {
+function loadCheckoutPageContent(page, data) {
     config = data;
     if (page === "checkoutpage") {
         let clonedArr = [...config.checkout.discounts];
