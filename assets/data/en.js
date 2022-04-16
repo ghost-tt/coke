@@ -12,7 +12,8 @@ window.addEventListener('message', function (eventData) {
         scriptTag.type = "text/javascript";
         document.getElementById('bodyContent').append(scriptTag);
         setTimeout(() => {
-            loadPageContent("homepage", parsedEventData.data)
+            loadPageContent("homepage", parsedEventData.data);
+            loadCheckoutPageContent("checkoutpage", parsedEventData.data);
         }, 2500);
     }
 });

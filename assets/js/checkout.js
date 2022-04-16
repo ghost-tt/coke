@@ -1,8 +1,7 @@
-(function () {
-    loadCheckoutPageContent("checkoutpage");
-})();
+var config = {};
 
 function loadCheckoutPageContent(page) {
+    config = data;
     if (page === "checkoutpage") {
         let clonedArr = [...config.checkout.discounts];
         clonedArr.splice(0, 1);
