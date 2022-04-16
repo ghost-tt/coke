@@ -249,12 +249,12 @@ function insertInnerProducts(products) {
                 <div class="product-card">
                     <div class="product-tumb inner">
                         <div class="innerbox">
-                            <img class="img__wrapper inner" src=${item.icon} alt="">
+                            <img class="img__wrapper inner" src=${item.image} alt="">
                         </div>
                     </div>
                     <div class="product__details inner">
                         <div class="product__text__wrapper">
-                            <p class="product__name">${item.name}</p>
+                            <p class="product__name">${item.product_name}</p>
                             <p class="product__quantity">${item.description}</p>
                             <p class="product__price">$${item.price}</p>
                         </div>
