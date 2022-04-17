@@ -269,7 +269,7 @@
     box-sizing: border-box;
     border-radius: 2px;
     font-size: 14px;
-    pointer-events: none;
+    /* pointer-events: none; */
 }
 
 .counter__container .counter__input.home {

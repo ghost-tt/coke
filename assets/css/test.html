@@ -1,0 +1,77 @@
+<!DOCTYPE>
+<html>
+<head>
+    <style>
+        body {
+            width: 320px;
+        }
+ 
+        #content {
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 3;
+            overflow: hidden;
+            width: 320px;
+        }
+ 
+        #content.reveal-all {
+            display: block;
+        }
+ 
+        #btn-expand-container {
+            margin-top: 12px;
+            text-align: right;
+        }
+ 
+        #btn-expand-container button {
+            cursor: pointer;
+        }
+    </style>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            function detectIsOverflow(element) {
+                return element.scrollHeight > element.clientHeight
+            }
+ 
+            function enableReadMoreButton(condition, element) {
+                if(condition == true) {
+                    element.show();
+                } else {
+                    element.hide();
+                }
+            }
+ 
+            function toggleReadCloseText(parent, element_readmore, element_close) {
+                if(element_readmore.is(":visible")) {
+                    parent.addClass('reveal-all');
+                    element_readmore.hide();
+                    element_close.show();
+                } else {
+                    parent.removeClass('reveal-all');
+                    element_readmore.show();
+                    element_close.hide();
+                }
+            }
+ 
+            var is_content_overflow = detectIsOverflow($('#content')[0]);
+ 
+            enableReadMoreButton(is_content_overflow, $('#btn-expand-container'));
+ 
+            $('#btn-expand-container button').on('click', function() {
+                toggleReadCloseText($('#content'), $('.txt-readmore'), $('.txt-readless'));
+            });
+             
+        });
+    </script>
+</head>
+<body>
+    <div id="content">
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque semper nisi sed interdum sollicitudin. Sed ac elit vitae lacus scelerisque cursus. Donec vehicula diam vel magna vestibulum, nec porttitor lacus ullamcorper. Suspendisse vehicula sapien sit amet eros vehicula accumsan. Vivamus lobortis, sem sit amet consectetur fermentum, quam erat hendrerit nunc, ut vestibulum lectus arcu cursus nisi. Donec blandit neque sed tristique rutrum. Cras vel mi eleifend purus fermentum mattis. Nulla fermentum erat at mauris congue, eu aliquet mi scelerisque. Duis in faucibus quam. Praesent facilisis vitae nulla in suscipit. Praesent porta sapien cursus odio rhoncus commodo. Maecenas ac magna vel velit finibus sagittis sed nec tortor.
+    </div>
+    <div id="btn-expand-container">
+        <button class="txt-readmore">Read More</button>
+        <button class="txt-readless" style="display: none;">Close</button>
+    </div>
+</body>
+</html>

@@ -20,13 +20,25 @@
             
         </div>
 
+        <div class="bannerSlider">
+            <div class="slider-wrapper">
+                <img src="/assets/images/svg/image 9.svg" />
+            </div>
+            <div class="slider-wrapper">
+                <img src="/assets/images/svg/image 9.svg" />
+            </div>
+            <div class="slider-wrapper">
+                <img src="/assets/images/svg/image 9.svg" />
+            </div>
+        </div>
+                 
 
         <!-- Main Hero Banner -->
-        <div class="slider-wrapper">
+        <!-- <div class="slider-wrapper">
             <div class="wrapper"></div>
             <div class="hero-banner"></div>
             <div class="wrapper"></div>
-        </div>
+        </div> -->
 
 
         <!-- Tab switcher -->
@@ -98,4 +110,35 @@
             <div class="view__cart__cta" onclick="renderPage('checkoutpage', 'order_summary')">VIEW CART</div>
         </div>
     </div>
+    <script>
+        $(".bannerSlider").slick({
+            infinite: true,
+            centerMode: true,
+            centerPadding: '60px',
+            slidesToShow: 1,
+            speed: 1300,
+            autoplay: true,
+            autoplaySpeed: 3000,
+            responsive: [
+                {
+                breakpoint: 768,
+                settings: {
+                    arrows: false,
+                    centerMode: true,
+                    centerPadding: '40px',
+                    slidesToShow: 1
+                }
+                },
+                {
+                breakpoint: 480,
+                settings: {
+                    arrows: false,
+                    centerMode: true,
+                    centerPadding: '40px',
+                    slidesToShow: 1
+                }
+                }
+            ]
+            });
+    </script>
 </div>

@@ -66,6 +66,10 @@ body {
     position: relative;
 }
 
+input:focus {
+    outline: 0;
+}
+
 img,
 embed {
     width: 100%;
@@ -109,4 +113,10 @@ svg {
     #checkoutpage {
         padding: 0 64px 54px 64px;
     }
+}
+
+.slick-slide img {
+    object-fit: cover;
+    padding: 0 5px;
+    border-radius: 6px;
 }
