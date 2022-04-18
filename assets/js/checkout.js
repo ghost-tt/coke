@@ -1,4 +1,5 @@
 var config = {};
+var orderCartData = {};
 
 function loadCheckoutPageContent(page, data) {
     config = data;
@@ -12,6 +13,10 @@ function loadCheckoutPageContent(page, data) {
 
         $('.more__cta').click(function () {
             expandMore(this);
+        });
+
+        $('.buyout__btn').click(function () {
+            sendDataToBot();
         });
     }
 }
@@ -328,6 +333,13 @@ function recalculateCart(discountData) {
     }
     $('.sticky__footer').fadeIn().show();
     $("#numberCircle").fadeIn().css("display", "flex");
+    orderCartData = {
+        products: cartData,
+        tax: tax,
+        discount: discount,
+        subtotal: subtotal
+    }
+    console.log(orderCartData)
 }
 
 function updateCounterDataFromCheckout(type) {
@@ -338,4 +350,12 @@ function updateCounterDataFromCheckout(type) {
     let value = $(targetNode).parent().siblings(".counter__input").val();
     $(`#counter_input_${decodedselectedProduct.sku}`).val(value);
     $(`#counter_input_${decodedselectedProduct.sku}`).change();
+}
+
+function sendDataToBot() {
+    console.log(orderCartData);
+    window.contentWindow.postMessage(JSON.stringify({
+        event_code: 'custom-childtoparent-client-event',
+        data: orderCartData
+    }), '*');
 }

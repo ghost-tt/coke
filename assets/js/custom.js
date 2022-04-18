@@ -111,7 +111,7 @@ function insertPromotionsContainer() {
                     <div class="product__text__wrapper">
                         <p class="product__name">${promotion.name}</p>
                         <p class="product__quantity">${promotion.description}</p>
-                        ${promotion.description.length > 120 ? `<div class="readmore">read more</div>` : ""}
+                        ${promotion.description.length > 60 ? `<div class="readmore">read more</div>` : ""}
                         <div class="readless hide">read less</div>
                         <p class="product__price">$${promotion.price}</p>
                     </div>

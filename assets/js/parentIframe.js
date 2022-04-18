@@ -25,6 +25,11 @@ window.addEventListener('message', function (eventData) {
             }), '*');
             return;
         }
+
+        if (parsedData?.event_code == 'custom-parenttoroot-client-event' && parsedData?.data) {
+            console.log("------- --- --- --- ------> ", parsedData);
+            return;
+        }
     } catch (error) {
         console.log(error);
         return;
