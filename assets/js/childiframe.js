@@ -24,7 +24,7 @@ window.addEventListener('message', function (eventData) {
 
     if(parsedEventData.event_code === "custom-childtoparent-client-event" && parsedEventData.data) {
         console.log("innner iframe called with parsed Data ---> ", parsedEventData.data);
-        parent.contentWindow.postMessage(JSON.stringify({
+        parent.postMessage(JSON.stringify({
             event_code: 'custom-parenttoroot-client-event',
             data: parsedEventData.data
         }), '*');
