@@ -28,6 +28,15 @@ window.addEventListener('message', function (eventData) {
 
         if (parsedData?.event_code == 'custom-parenttoroot-client-event' && parsedData?.data) {
             console.log("------- --- --- --- ------> ", parsedData);
+            document.getElementById('ymIframe').contentWindow.postMessage({
+                event_code: 'ym-client-event',
+                data: {
+                    event: {
+                     code: "Updated-Json",
+                     data: parsedData
+                    }
+                }
+           }, '*');
             return;
         }
     } catch (error) {
