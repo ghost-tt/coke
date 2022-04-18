@@ -354,7 +354,7 @@ function updateCounterDataFromCheckout(type) {
 
 function sendDataToBot() {
     console.log(orderCartData);
-    window.contentWindow.postMessage(JSON.stringify({
+    window.parent.postMessage(JSON.stringify({
         event_code: 'custom-childtoparent-client-event',
         data: orderCartData
     }), '*');
