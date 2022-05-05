@@ -29,4 +29,20 @@ window.addEventListener('message', function (eventData) {
             data: parsedEventData.data
         }), '*');
     }
+
+    if(parsedEventData.event_code === "custom-checkout-event") {
+        console.log("innner iframe called with parsed Data for checkout ---> ", parsedEventData.data);
+        parent.postMessage(JSON.stringify({
+            event_code: 'custom-parenttoroot-checkout-event',
+            data: parsedEventData.data
+        }), '*');
+    }
+
+    if(parsedEventData.event_code === "custom-parent-client-checkout-event") {
+        console.log("Final applied coupons data in childframe.js ---> ", parsedEventData.data);
+        document.querySelector("iframe").contentWindow.postMessage(JSON.stringify({
+            event_code: 'custom-parentchild-client-checkout-event',
+            data: parsedEventData.data
+        }), '*');
+    }
 });

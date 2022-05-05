@@ -1,12 +1,10 @@
 var config = {};
 var orderCartData = {};
+var discountPrice = 0;
 
 function loadCheckoutPageContent(page, data) {
     config = data;
     if (page === "checkoutpage") {
-        let clonedArr = [...config.checkout.discounts];
-        clonedArr.splice(0, 1);
-        insertDiscountSection(clonedArr);
         insertDistributorAddress();
         insertOrderSummary();
         insertDeliveryDetails();
@@ -31,18 +29,20 @@ function insertOrderCart(orderCart, skuid) {
                     <div class="details__section">
                         <div class="name">${product.name}</div>
                         <div class="discount__offer">
-                            <span class="price">$${product.price}</span>
-                            <span class="discount">$${product.costprice}</span>
+                            <span class="price">Rs. ${product.price}</span>
+                            <span class="discount">Rs. ${product.costprice}</span>
                         </div>
                         <div class="discount__detail">${product.discount_detail}</div>
-                        <div class="discount__detail__bar"><div class="description">${product.discount_description}</div><span>read more</span></div>
+                        <div class="discount__detail__bar">
+                            <div class="description">${product.discount_description}</div>
+                        </div>
                     </div>
                     <div class="product__counter">
                         <div class="icon__wrapper">
                             <img src="/coke/assets/images/png/product.png" />
                         </div>
 
-                        <div class="counter__wrapper">
+                        <div class="counter__wrapper checkout">
                             <div class="counter__container checkout">
                                 <div class="counter__box__container">
                                     <div class="counter__minus" id="minus" product="${encodeURIComponent(JSON.stringify(product))}" onclick="updateCounterDataFromCheckout('minus')">
@@ -50,10 +50,15 @@ function insertOrderCart(orderCart, skuid) {
                                     </div>
                                 </div>
                             
-                                <input id="counter_input" class="counter__input" type="text" value='${orderCart[skuid]["quantity"]}' size="1" maxlength="2" />
+                                <input id="counter_input" class="counter__input" type="text" value='${orderCart[skuid]["quantity"]}' size="2" maxlength="2" />
                                 <div class="counter__box__container">
                                     <div class="counter__plus" id="plus" product="${encodeURIComponent(JSON.stringify(product))}" onclick="updateCounterDataFromCheckout('add')">
                                         <img src="/coke/assets/images/png/plus.png" />
+                                    </div>
+                                </div>
+                                <div class="addmore__qty">
+                                    <div class="submit">
+                                        <img src="/assets/images/svg/icons8-ok.svg" />
                                     </div>
                                 </div>
                             </div>
@@ -71,18 +76,20 @@ function insertOrderCart(orderCart, skuid) {
                 <div class="details__section">
                     <div class="name">${product.name}</div>
                     <div class="discount__offer">
-                        <span class="price">$${product.price}</span>
-                        <span class="discount">$${product.costprice}</span>
+                        <span class="price">Rs. ${product.price}</span>
+                        <span class="discount">Rs. ${product.costprice}</span>
                     </div>
                     <div class="discount__detail">${product.discount_detail}</div>
-                    <div class="discount__detail__bar"><div class="description">${product.discount_description}</div><span>read more</span></div>
+                    <div class="discount__detail__bar">
+                        <div class="description">${product.discount_description}</div>
+                    </div>
                 </div>
                 <div class="product__counter">
                     <div class="icon__wrapper">
                         <img src="/coke/assets/images/png/product.png" />
                     </div>
 
-                    <div class="counter__wrapper">
+                    <div class="counter__wrapper checkout">
                         <div class="counter__container checkout">
                             <div class="counter__box__container">
                                 <div class="counter__minus" id="minus" product="${encodeURIComponent(JSON.stringify(product))}" onclick="updateCounterDataFromCheckout('minus')">
@@ -90,10 +97,15 @@ function insertOrderCart(orderCart, skuid) {
                                 </div>
                             </div>
                         
-                            <input id="counter_input" class="counter__input" type="text" value="1" size="1" maxlength="2" />
+                            <input id="counter_input" class="counter__input" type="text" value="1" size="2" maxlength="2" />
                             <div class="counter__box__container">
                                 <div class="counter__plus" id="plus" product="${encodeURIComponent(JSON.stringify(product))}" onclick="updateCounterDataFromCheckout('add')">
                                     <img src="/coke/assets/images/png/plus.png" />
+                                </div>
+                            </div>
+                            <div class="addmore__qty">
+                                <div class="submit">
+                                    <img src="/assets/images/svg/icons8-ok.svg" />
                                 </div>
                             </div>
                         </div>
@@ -105,44 +117,51 @@ function insertOrderCart(orderCart, skuid) {
 
 }
 
-function insertSelectedCoupon(discount, type) {
+function insertSelectedCoupon(discountData, type, data) {
     var elementNode = "";
     if (type === "update") {
         elementNode = ".coupon__banner__container";
     } else {
         elementNode = "#coupon_container";
     }
-    $(elementNode).replaceWith(`
-        <div class="coupon__banner__container">
-            <div class="title">Coupon details</div>
-            <div class="banner__wrapper">
-                <div class="svg__box">
-                    <svg width="84" height="146" viewBox="0 0 84 146" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M83.0244 3.05176e-05H0V2.93142C2.30098 2.93142 4.16068 4.79111 4.16068 7.09209C4.16068 9.39307 2.30098 11.2528 0 11.2528V13.9005C2.30098 13.9005 4.16068 15.7602 4.16068 18.0612C4.16068 20.3621 2.30098 22.2218 0 22.2218V24.8695C2.30098 24.8695 4.16068 26.7292 4.16068 29.0302C4.16068 31.3312 2.30098 33.1909 0 33.1909V35.8386C2.30098 35.8386 4.16068 37.6983 4.16068 39.9993C4.16068 42.3002 2.30098 44.1599 0 44.1599V46.8076C2.30098 46.8076 4.16068 48.6673 4.16068 50.9683C4.16068 53.2693 2.30098 55.129 0 55.129V58.4701C7.56487 58.6278 13.6483 64.8057 13.6483 72.4021C13.6483 79.9985 7.56487 86.271 0 86.4286V89.9904C2.30098 89.9904 4.16068 91.8501 4.16068 94.1511C4.16068 96.4521 2.30098 98.3118 0 98.3118V100.959C2.30098 100.959 4.16068 102.819 4.16068 105.12C4.16068 107.421 2.30098 109.281 0 109.281V111.929C2.30098 111.929 4.16068 113.788 4.16068 116.089C4.16068 118.39 2.30098 120.25 0 120.25V122.898C2.30098 122.898 4.16068 124.757 4.16068 127.058C4.16068 129.359 2.30098 131.219 0 131.219V133.867C2.30098 133.867 4.16068 135.726 4.16068 138.027C4.16068 140.328 2.30098 142.188 0 142.188V145.844H83.0244V3.05176e-05Z" fill="#F4000B"/>
-                    </svg>
-                    <div class="coupon__name__box">
-                        <div class="name">
-                            ${discount.brand}
+    $(elementNode).empty();
+    discountPrice = 0;
+    $(elementNode).empty();
+    $('#title_loader').empty();
+    discountData.map((discount, index) => {
+        discountPrice += discount.discountedPrice;
+        let qty = discount.quantity > 0 ? `<span>${discount.quantity}</span>` : "";
+        $(elementNode).append(`
+            <div class="coupon__banner__container">
+                <div class="banner__wrapper">
+                    <div class="svg__box">
+                        <svg width="84" height="146" viewBox="0 0 84 146" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M83.0244 3.05176e-05H0V2.93142C2.30098 2.93142 4.16068 4.79111 4.16068 7.09209C4.16068 9.39307 2.30098 11.2528 0 11.2528V13.9005C2.30098 13.9005 4.16068 15.7602 4.16068 18.0612C4.16068 20.3621 2.30098 22.2218 0 22.2218V24.8695C2.30098 24.8695 4.16068 26.7292 4.16068 29.0302C4.16068 31.3312 2.30098 33.1909 0 33.1909V35.8386C2.30098 35.8386 4.16068 37.6983 4.16068 39.9993C4.16068 42.3002 2.30098 44.1599 0 44.1599V46.8076C2.30098 46.8076 4.16068 48.6673 4.16068 50.9683C4.16068 53.2693 2.30098 55.129 0 55.129V58.4701C7.56487 58.6278 13.6483 64.8057 13.6483 72.4021C13.6483 79.9985 7.56487 86.271 0 86.4286V89.9904C2.30098 89.9904 4.16068 91.8501 4.16068 94.1511C4.16068 96.4521 2.30098 98.3118 0 98.3118V100.959C2.30098 100.959 4.16068 102.819 4.16068 105.12C4.16068 107.421 2.30098 109.281 0 109.281V111.929C2.30098 111.929 4.16068 113.788 4.16068 116.089C4.16068 118.39 2.30098 120.25 0 120.25V122.898C2.30098 122.898 4.16068 124.757 4.16068 127.058C4.16068 129.359 2.30098 131.219 0 131.219V133.867C2.30098 133.867 4.16068 135.726 4.16068 138.027C4.16068 140.328 2.30098 142.188 0 142.188V145.844H83.0244V3.05176e-05Z" fill="#F4000B"/>
+                        </svg>
+                        <div class="coupon__name__box">
+                            <div class="name">
+                                PROMO
+                            </div>
+                            <div class="stripes"></div>
                         </div>
-                        <div class="stripes"></div>
                     </div>
-                </div>
-                <div class="detail__box">
-                    <div class="box__wrapper">
-                        <div class="discount__info">
-                            <div class="title">Already availed discount</div>
-                            <div class="discount_name">${discount.name}</div>
+                    <div class="detail__box">
+                        <div class="box__wrapper">
+                            <div class="discount__info">
+                                <div class="title">Applied Promo</div>
+                                <div class="discount_name">${discount.offer_name}</div>
+                            </div>
+                            <div class="discount__detail">${qty} ${discount.display_message}</div>
                         </div>
-                        <div class="discount__detail">${discount.offer}</div>
                     </div>
                 </div>
             </div>
-            <div class="view__more" id="view_more" onclick="viewDiscount()">View More Discount</div>
-        </div>
-    `)
+        `)
+    });
+    recalculateOrderSummary(data);
 }
 
-function insertDiscountSection(discountAvailable) {
+/* function insertDiscountSection(discountAvailable) {
         $("#offers_height_box").empty();
         discountAvailable.map((discount, index) => {
         $("#offers_height_box").prepend(`
@@ -179,18 +198,18 @@ function insertDiscountSection(discountAvailable) {
             </div>
         `)
     });
-
-    $('.offer__apply').click(function () {
-        addDiscount(this);
-    });
-}
+    // $("#offers_height_box").append(`<div class="view__less" onclick="hideDiscount()">View less</div>`);
+    // $('.offer__apply').click(function () {
+    //     addDiscount(this);
+    // });
+    // recalculateCart();
+} */
 
 function insertDistributorAddress() {
     $("#distributor_details_container").append(`
         <div class="title">Distributor address</div>
         <div class="summary__wrapper">
-            <div class="detail">${config.checkout.distributor_details.address},</div>
-            <div class="detail__num">${config.checkout.distributor_details.phone}</div>
+            <div class="detail" style="margin:0;">${config.checkout.distributor_details.name}</div>
         </div>
     `)
 }
@@ -202,10 +221,6 @@ function insertOrderSummary() {
                 <div class="price__item">
                     <div class="key bold">Item total</div>
                     <div class="item" orderValue="0" id="item_total">$0</div>
-                </div>
-                <div class="price__item">
-                    <div class="key">Taxes & charges</div>
-                    <div class="item" orderValue="0" id="tax_charges">$0</div>
                 </div>
                 <div class="price__item" id="discount_perc">
                     <div class="key red">Discount</div>
@@ -269,9 +284,10 @@ function viewDiscount() {
 
 function hideDiscount() {
     $("#offers_parent_container").css('height', 0);
+    $("#view_more").removeClass("hide");
 }
 
-function addDiscount(node) {
+/* function addDiscount(node) {
     let discountData = $(node).attr("discount-data");
     let decodedDiscountData = JSON.parse(decodeURIComponent(discountData));
     insertSelectedCoupon(decodedDiscountData, "update");
@@ -282,14 +298,44 @@ function addDiscount(node) {
     insertDiscountSection(filteredDiscounts);
     $("#view_more").fadeIn().removeClass("hide");
     recalculateCart(decodedDiscountData);
-}
+} */
 
 function processQ(data, skuid) {
     insertOrderCart(data, skuid);
-    recalculateCart(config.checkout.discounts[1]);
+    passDataToBot(data);
+    recalculateCart();
 }
 
-function recalculateCart(discountData) {
+function recalculateOrderSummary(data) {
+    /* Calculate totals */
+    // let tax = subtotal * 0.28;
+    let discount = discountPrice;
+    let total = data.subtotal - discount;
+
+    $('.item').fadeOut(300, function () {
+        $('#title_loader').empty();
+        $('#loader_coupon').empty();
+        $('#loader_summary_bar').empty();
+        $('#text__loading').empty();
+        $('#continue_cta').removeClass("disabled");
+
+        $('#item_total').text(data.subtotal.toFixed(2));
+        $('#item_total').attr("orderValue", data.subtotal.toFixed(2));
+
+        $('#discout_perc').text(discount.toFixed(2));
+        $('#discout_perc').attr("orderValue", discount.toFixed(2));
+
+        $('#grand_total').text(total.toFixed(2));
+        $('#grand_total').attr("orderValue", total.toFixed(2));
+
+        $('.item').fadeIn(300);
+    });
+
+    orderCartData["discount"] = discount;
+    orderCartData["total"] = total;
+}
+
+function recalculateCart() {
     let subtotal = 0;
     /* Sum up row totals */
     for (const key in cartData) {
@@ -301,45 +347,47 @@ function recalculateCart(discountData) {
             // subtotal = subtotal * (parseInt(cartData[key]["quantity"]) ? parseInt(cartData[key]["quantity"]) : 1);
         }
     }
-    /* Calculate totals */
-    let tax = subtotal * 0.28;
-    let discount = subtotal * (parseInt(discountData.discount) / 100);
-    let total = subtotal + tax - discount;
-
+    
     /* Update totals display */
     $('.item').fadeOut(300, function () {
-        $('#item_total').text(subtotal.toFixed(2));
-        $('#item_total').attr("orderValue", subtotal.toFixed(2));
+        $('#title_loader').html(`<div>Personalizing Promotions...</div>`);
+        $('#loader_coupon').html(`<div id="loading"></div>`);
+        $('#loader_summary_bar').html(`<div id="loading"></div>`);
+        $('#notification_bar').html(`<div class="checkout_notification">Promotions Applied!</div>`);
+        $('#text__loading').text(`  (Recalculating...)`);
+        $('#continue_cta').addClass("disabled");
 
-        $('#sticky_cart_price').text(`$${subtotal.toFixed(2)}`);
+        // $('#item_total').html(`<div id="loading"></div>`);
+        $('#item_total').attr("orderValue", 0);
+
+        $('#sticky_cart_price').text(`Rs. ${subtotal.toFixed(2)}`);
         $('#sticky_cart_quantity').text(`${$("#numberCircle").attr("value")} Item`);
 
-        $('#tax_charges').text(tax.toFixed(2));
-        $('#tax_charges').attr("orderValue", tax.toFixed(2));
+        // $('#discout_perc').html(`<div id="loading"></div>`);
+        $('#discout_perc').attr("orderValue", 0);
 
-        $('#discout_perc').text(discount.toFixed(2));
-        $('#discout_perc').attr("orderValue", discount.toFixed(2));
-
-        $('#grand_total').text(total.toFixed(2));
-        $('#grand_total').attr("orderValue", total.toFixed(2));
+        // $('#grand_total').html(`<div id="loading"></div>`);
+        $('#grand_total').attr("orderValue", 0);
 
         $('.item').fadeIn(300);
     });
 
-    if ($("#numberCircle").attr("value") == 0) {
-        $(".sticky__footer").fadeIn().hide();
-        $("#numberCircle").fadeIn().hide();
-        return
-    }
     $('.sticky__footer').fadeIn().show();
     $("#numberCircle").fadeIn().css("display", "flex");
+
+    if ($("#numberCircle").attr("value") == 0) {
+        $(".sticky__footer").hide();
+        $("#numberCircle").hide();
+        return;
+    }
+    // $('.sticky__footer').fadeIn().show();
+    // $("#numberCircle").fadeIn().css("display", "flex");
     orderCartData = {
         products: cartData,
-        tax: tax,
-        discount: discount,
-        subtotal: subtotal
-    }
-    console.log(orderCartData)
+        subtotal: subtotal,
+    };
+
+    return orderCartData;
 }
 
 function updateCounterDataFromCheckout(type) {
@@ -352,10 +400,17 @@ function updateCounterDataFromCheckout(type) {
     $(`#counter_input_${decodedselectedProduct.sku}`).change();
 }
 
+
 function sendDataToBot() {
-    console.log(orderCartData);
     window.parent.postMessage(JSON.stringify({
         event_code: 'custom-childtoparent-client-event',
         data: orderCartData
+    }), '*');
+}
+
+function passDataToBot(data) {
+    window.parent.postMessage(JSON.stringify({
+        event_code: 'custom-checkout-event',
+        data: data
     }), '*');
 }

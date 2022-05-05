@@ -120,3 +120,76 @@ svg {
     padding: 0 5px;
     border-radius: 6px;
 }
+
+.dropdown__filter {
+    opacity: 0;
+}
+
+#loading {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    border: 2px solid #f4000b;
+    border-radius: 50%;
+    border-top-color: #fff;
+    animation: spin 1s ease-in-out infinite;
+    -webkit-animation: spin 1s ease-in-out infinite;
+  }
+  
+  @keyframes spin {
+    to { -webkit-transform: rotate(360deg); }
+  }
+  @-webkit-keyframes spin {
+    to { -webkit-transform: rotate(360deg); }
+  }
+
+.toast__box {
+    padding:  0 10%;
+}
+
+#simpleToast {
+    visibility: hidden;
+    width: 100%;
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    border-radius: 2px;
+    padding: 16px 32px;
+    position: fixed;
+    z-index: 1;
+    bottom: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    left: 0;
+    right:0;
+  }
+  #simpleToast span {
+    font-size: 12px;
+  }
+  #simpleToast.show {
+    visibility: visible;
+    -webkit-animation: comein 0.5s, goin 0.5s 2.5s;
+    animation: comein 0.5s, goin 0.5s 2.5s;
+  }
+  
+  @-webkit-keyframes comein {
+    from {bottom: 0; opacity: 0;}
+    to {bottom: 60px; opacity: 1;}
+  }
+  
+  @keyframes comein {
+    from {bottom: 0; opacity: 0;}
+    to {bottom: 60px; opacity: 1;}
+  }
+  
+  @-webkit-keyframes goin {
+    from {bottom: 60px; opacity: 1;}
+    to {bottom: 0; opacity: 0;}
+  }
+  
+  @keyframes goin {
+    from {bottom: 60px; opacity: 1;}
+    to {bottom: 0; opacity: 0;}
+  }
+  

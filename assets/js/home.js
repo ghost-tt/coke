@@ -7,6 +7,7 @@ function renderPage(page, sectionToScroll) {
     if (page === "homepage") {
         document.getElementById(`${page}`).style.display = "block";
         document.getElementById(`checkoutpage`).style.display = "none";
+        $(window).scrollTop(0);
     }
 
     if (page === "checkoutpage") {

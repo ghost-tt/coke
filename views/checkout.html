@@ -1,8 +1,7 @@
 
 
 <div class="checkout__container" id="checkoutpage">
-    
-    
+    <div id="notification_bar"></div>
     <div class="order__wrapper">
         <div class="title">Your order</div>
         <div class="order__container" id="order_checkout_cart">
@@ -11,8 +10,18 @@
     </div>
 
     
-    <div id="coupon_container">
+    <div class="coupon__parent__wrapper">
+        <div class="title__container">
+            <div class="title__bar" id="title_box">
+                <div class="title">Promotions details</div>
+                <div class="loader__coupon" id="loader_coupon"></div>
+            </div>
+            <div class="title__loader" id="title_loader"></div>
+        </div>
         
+        <div id="coupon_container">
+        
+        </div>
     </div>
     
 
@@ -25,7 +34,10 @@
 
 
     <div class="delivery__details__container" id="order_summary">
-        <div class="title">Order summary</div>
+        <div class="title__bar" id="title_box">
+            <div class="title">Order summary<span id="text__loading"></span></div>
+            <div class="loader__coupon" id="loader_summary_bar"></div>
+        </div>
         
     </div>
 
@@ -40,7 +52,8 @@
     </div>
 
     <div class="buyout__btn__wrapper">
-        <div class="buyout__btn">continue</div>
+        <div id="continue_cta" class="buyout__btn">Place Order</div>
+        <div class="buyout__btn" onclick="renderPage('homepage')">Add Items</div>
     </div>
 </div>
 
