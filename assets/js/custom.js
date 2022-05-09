@@ -61,14 +61,19 @@ function loadPageContent(page, data) {
         $(this).parent(".addmore__qty").css("display", "none");
         
         if(currentValue != 0) {
-            if(previousValue > currentValue) {
-                for (let i = 0; i < (previousValue - currentValue); i++) {
-                    updateCounter($($(counterInput).siblings()[0]).children()[0], "minus");
-                }
-            } else {
-                for (let i = 0; i < currentValue; i++) {
-                    updateCounter($($(counterInput).siblings()[1]).children()[0], "add");
-                }
+            let productData = $(this).attr("product");
+            let decodedProductData = JSON.parse(decodeURIComponent(productData));
+            delete cartData[decodedProductData.sku];
+            counterInput.val(0);
+            counterInput.change();
+            counterInput.attr("previous-value", 0);
+            let numberCircleCount = $("#numberCircle").attr("value");
+            let parseCount = Number(numberCircleCount)
+            let updatedValue = parseCount - previousValue;
+            $("#numberCircle").attr("value", updatedValue);
+            $("#numberCircle").text(updatedValue);
+            for (let i = 0; i < currentValue; i++) {
+                updateCounter($($(counterInput).siblings()[1]).children()[0], "add");
             }
         }
     });
@@ -511,7 +516,7 @@ function updateCounter(counterInput, type, requestFrom) {
         var $input = $(siblingWrapper);
         let productData = $(counterInput).attr("product");
         let decodedProductData = JSON.parse(decodeURIComponent(productData));
-        if(cartData && Object.keys(cartData).length !== 0 && cartData[decodedProductData.sku].quantity >= decodedProductData.itemspercase) {
+        if(cartData && Object.keys(cartData).length !== 0 && cartData[decodedProductData.sku]?.quantity >= decodedProductData?.itemspercase) {
             showToastMessage(decodedProductData.itemspercase);
             return false;
         }
