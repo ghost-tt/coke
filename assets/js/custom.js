@@ -9,15 +9,20 @@ function loadPageContent(page, data) {
         // JAY
         // insertOrderHistoryProducts();
         insertFilterBar();
-        insertProducts(config.products);
-        insertInnerProducts(config.products);
+        
+        let sortedProducts = groupProductsByCategory(config.products, "volume");
+        insertProducts(sortedProducts, "volume_name");
+        insertInnerProducts(sortedProducts);
+
         $('input').blur(function () {
-            // $($(this).siblings()[0]).fadeIn("slow").show();
-            // $($(this).siblings()[1]).fadeIn("slow").show();
-            // $(this).siblings(".addmore__qty").css("opacity", "0");
-            // $(this).siblings(".addmore__qty").css("display", "none");
+            setTimeout(() => {
+                $($(this).siblings()[0]).fadeIn("slow").show();
+                $($(this).siblings()[1]).fadeIn("slow").show();
+                $(this).siblings(".addmore__qty").css("opacity", "0");
+                $(this).siblings(".addmore__qty").css("display", "none");
+            }, 500);
         });
-        $('input').focus(function() {
+        $('input').focus(function () {
             $($(this).siblings()[0]).fadeIn("slow").hide();
             $($(this).siblings()[1]).fadeIn("slow").hide();
             $(this).siblings(".addmore__qty").css("opacity", "1");
@@ -67,8 +72,8 @@ function loadPageContent(page, data) {
         $($(this).parent().siblings()[2]).fadeIn("slow").show();
         $(this).parent(".addmore__qty").css("opacity", "0");
         $(this).parent(".addmore__qty").css("display", "none");
-        
-        if(currentValue != 0) {
+
+        if (currentValue != 0) {
             let productData = $(this).attr("product");
             let decodedProductData = JSON.parse(decodeURIComponent(productData));
             delete cartData[decodedProductData.sku];
@@ -296,13 +301,13 @@ function insertFilterBar() {
     });
 }
 
-function insertProducts(products) {
+function insertProducts(products, sortedBy) {
     products.map((product, index) => {
         $("#product_item_container").append(`
             <div class="faq-drawer">
                 <input class="faq-drawer__trigger" id=${"faq-drawer" + "-" + index} type="checkbox" autocomplete="off"/>
                 <label class="faq-drawer__title" for=${"faq-drawer" + "-" + index}>
-                    ${product.volume}
+                    ${product[sortedBy]}
                     <div class="product__bar__icon"><img src=${product.icon} /></div>
                 </label>
                 <div class="faq-drawer__content-wrapper">
@@ -522,7 +527,7 @@ function addProducts(quantityInput) {
     let siblingWrapper = $(quantityInput).siblings(".counter__wrapper");
     let productData = $(quantityInput).attr("product");
     let decodedProductData = JSON.parse(decodeURIComponent(productData));
-    if(cartData && Object.keys(cartData).length !== 0 && cartData[decodedProductData.sku]?.quantity >= decodedProductData?.itemspercase) {
+    if (cartData && Object.keys(cartData).length !== 0 && cartData[decodedProductData.sku]?.quantity >= decodedProductData?.itemspercase) {
         showToastMessage(decodedProductData.itemspercase);
         return false;
     }
@@ -543,12 +548,12 @@ function updateCounter(counterInput, type, requestFrom) {
         var $input = $(siblingWrapper);
         let productData = $(counterInput).attr("product");
         let decodedProductData = JSON.parse(decodeURIComponent(productData));
-        if(cartData && Object.keys(cartData).length !== 0 && cartData[decodedProductData.sku]?.quantity >= decodedProductData?.itemspercase) {
+        if (cartData && Object.keys(cartData).length !== 0 && cartData[decodedProductData.sku]?.quantity >= decodedProductData?.itemspercase) {
             showToastMessage(decodedProductData.itemspercase);
             return false;
         }
 
-        if(decodedProductData.itemspercase <= parseInt($input.val())) {
+        if (decodedProductData.itemspercase <= parseInt($input.val())) {
             showToastMessage(decodedProductData.itemspercase);
             return false;
         }
@@ -610,9 +615,81 @@ function updateDropDownMenu(dpItem) {
     $("#dpValue").text($(dpItem).text());
     $("#product_item_container").empty();
     let dpItemAttr = JSON.parse(decodeURIComponent($(dpItem).attr("item")));
-    let products = sortProducts(config.products, dpItemAttr.sortBy);
-    insertProducts(products);
-    insertInnerProducts(products);
+    let sortedProducts = groupProductsByCategory(config.products, dpItemAttr.sortBy);
+    // let products = sortProducts(config.products, dpItemAttr.sortBy);
+    let sortedBy = dpItemAttr.sortBy === "volume" ? "volume_name" : dpItemAttr.sortBy;
+    insertProducts(sortedProducts, sortedBy);
+    insertInnerProducts(sortedProducts);
+    if(cartData && Object.keys(cartData).length !== 0) {
+        for(let key in cartData) {
+            $(`#promotions-add-${key}`).hide();
+            $(`#promotions-counter-${key}`).show();
+            $(`#counter_input_${key}`).val(parseInt(cartData[key].quantity));
+            $(`#counter_input_${key}`).change();
+            $(`#counter_input_${key}`).attr("previous-value", parseInt(cartData[key].quantity) - 1 > 0 ? parseInt(cartData[key].quantity) - 1 : 0);
+        }
+
+        $('.counter__minus').click(function () {
+            updateCounter(this, "minus");
+        });
+    
+        $('.counter__plus').click(function () {
+            updateCounter(this, "add");
+        });
+
+        $('.product-bottom-details').click(function () {
+            addProducts(this)
+        });
+    }
+    
+}
+
+function groupProductsByCategory(productsItemsJson, sortBy) {
+    let productsArrayCopy = JSON.parse(JSON.stringify(productsItemsJson));
+    let groupedItems = groupProductsIntoItems(productsArrayCopy, sortBy);
+    let sortCategory = sortProductsByCategory(groupedItems);
+    let sortedProducts = sortedByProducts(sortCategory, productsArrayCopy, sortBy);
+    return sortedProducts;
+}
+
+function groupProductsIntoItems(productsArray, sortBy) {
+    let groupProductsMultiJson = [];
+    for (let i = 0; i < productsArray.length; i++) {
+        groupProductsMultiJson.push(groupBy(productsArray[i].items, sortBy));
+    }
+    return groupProductsMultiJson;
+}
+
+function sortProductsByCategory(groupedItems) {
+    let sorted = {};
+    for (let i = 0; i < groupedItems.length; i++) {
+        for (let key in groupedItems[i]) {
+            if (sorted[key]) {
+                sorted[key] = [...sorted[key], ...groupedItems[i][key]];
+            } else {
+                sorted[key] = [...groupedItems[i][key]];
+            }
+        }
+    }
+    return sorted;
+}
+
+function sortedByProducts(sorted, productsArray, sortBy) {
+    for (let i = 0; i < productsArray.length; i++) {
+        productsArray[i].items = sorted[productsArray[i][sortBy]];
+    }
+    return productsArray;
+}
+
+function groupBy(objectArray, property) {
+    return objectArray.reduce(function (acc, obj) {
+        let key = obj[property]
+        if (!acc[key]) {
+            acc[key] = []
+        }
+        acc[key].push(obj)
+        return acc
+    }, {})
 }
 
 function sortProducts(products, sortBy) {
@@ -707,9 +784,9 @@ function updateProductsBasedOnProducts(node, type) {
     let products = decodedProductDataa.products;
     for (const key in products) {
         let data = products[key].product_data;
-        for(var i=0; i < products[key].quantity; i++) {
+        for (var i = 0; i < products[key].quantity; i++) {
             if (type === "add") {
-                if(data.itemspercase <= parseInt(products[key].quantity)) {
+                if (data.itemspercase <= parseInt(products[key].quantity)) {
                     showToastMessage(data.itemspercase);
                     return false;
                 }
@@ -731,7 +808,7 @@ function updateProductsBasedOnProducts(node, type) {
             updateCheckoutCartData(data, type);
         }
         // processQ({[key] : data}, key);
-        
+
     }
     $(orderhistoryNode).show();
     $(node).hide();
@@ -741,6 +818,5 @@ function showToastMessage(maxItems) {
     var x = document.querySelector("#simpleToast");
     x.className = "show";
     $(x).children(".toastMsg").text(`Max limit reached | ${maxItems} units`)
-    setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
-  }
-  
+    setTimeout(function () { x.className = x.className.replace("show", ""); }, 3000);
+}

@@ -150,24 +150,25 @@ window.addEventListener('message', function (eventData) {
     "filterbar": {
         "title": "Products",
         "menu": [
-            {
-                "name": "Name",
-                "active": false,
-                "sortBy": "name",
-            },
+            
             {
                 "name": "Volume",
                 "active": true,
-                "sortBy": "order_volume",
+                "sortBy": "volume",
+            },
+            {
+                "name": "Brand",
+                "active": false,
+                "sortBy": "brand",
             },
         ]
     },
     "products": [
         {
-            "icon": "/coke/assets/images/svg/coke_product.svg",
-            "volume": "2 Ltr",
-            "order_volume": 2,
-            "name": "coke",
+            "icon": "/assets/images/svg/coke_product.svg",
+            "volume_name": "2 Ltr",
+            "volume": 2,
+            "brand": "coke",
             "items": [
                 {
                     "sku": "CCPPID5",
@@ -182,6 +183,8 @@ window.addEventListener('message', function (eventData) {
                     "discount": "",
                     "discount_detail": "5 case offer on 1L/500ML",
                     "discount_description": "Kinley 5 case sit amet, consectetur amet consectetur",
+                    "brand": "coke",
+                    "volume": 2
                 },
                 {
                     "sku": "CCPPID6",
@@ -196,6 +199,8 @@ window.addEventListener('message', function (eventData) {
                     "discount": "",
                     "discount_detail": "5 case offer on 1L/500ML",
                     "discount_description": "Kinley 5 case sit amet, consectetur amet consectetur",
+                    "brand": "sprite",
+                    "volume": 1
                 },
                 {
                     "sku": "CCPPID7",
@@ -210,6 +215,8 @@ window.addEventListener('message', function (eventData) {
                     "discount": "",
                     "discount_detail": "5 case offer on 1L/500ML",
                     "discount_description": "Kinley 5 case sit amet, consectetur amet consectetur",
+                    "brand": "coke",
+                    "volume": 1
                 },
                 {
                     "sku": "CCPPID8",
@@ -224,14 +231,16 @@ window.addEventListener('message', function (eventData) {
                     "discount": "",
                     "discount_detail": "5 case offer on 1L/500ML",
                     "discount_description": "Kinley 5 case sit amet, consectetur amet consectetur",
+                    "brand": "fanta",
+                    "volume": 2
                 }
             ]
         },
         {
-            "icon": "/coke/assets/images/svg/fanta_xl.svg",
-            "volume": "1 Ltr",
-            "order_volume": 1,
-            "name": "fanta",
+            "icon": "/assets/images/svg/fanta_xl.svg",
+            "volume_name": "1 Ltr",
+            "volume": 1,
+            "brand": "fanta",
             "items": [
                 {
                     "sku": "CCPPID9",
@@ -246,6 +255,8 @@ window.addEventListener('message', function (eventData) {
                     "discount": "",
                     "discount_detail": "5 case offer on 1L/500ML",
                     "discount_description": "Kinley 5 case sit amet, consectetur amet consectetur",
+                    "brand": "fanta",
+                    "volume": 0.250
                 },
                 {
                     "sku": "CCPPID10",
@@ -260,6 +271,8 @@ window.addEventListener('message', function (eventData) {
                     "discount": "",
                     "discount_detail": "5 case offer on 1L/500ML",
                     "discount_description": "Kinley 5 case sit amet, consectetur amet consectetur",
+                    "brand": "coke",
+                    "volume": 0.250
                 },
                 {
                     "sku": "CCPPID11",
@@ -274,6 +287,8 @@ window.addEventListener('message', function (eventData) {
                     "discount": "",
                     "discount_detail": "5 case offer on 1L/500ML",
                     "discount_description": "Kinley 5 case sit amet, consectetur amet consectetur",
+                    "brand": "sprite",
+                    "volume": 1
                 },
                 {
                     "sku": "CCPPID12",
@@ -288,14 +303,16 @@ window.addEventListener('message', function (eventData) {
                     "discount": "",
                     "discount_detail": "5 case offer on 1L/500ML",
                     "discount_description": "Kinley 5 case sit amet, consectetur amet consectetur",
+                    "brand": "fanta",
+                    "volume": 1
                 }
             ]
         },
         {
-            "icon": "/coke/assets/images/svg/sprite_product.svg",
-            "volume": "250 Ml",
-            "order_volume": 0.250,
-            "name": "sprite",
+            "icon": "/assets/images/svg/sprite_product.svg",
+            "volume_name": "250 Ml",
+            "volume": 0.250,
+            "brand": "sprite",
             "items": [
                 {
                     "sku": "CCPPID13",
@@ -310,6 +327,8 @@ window.addEventListener('message', function (eventData) {
                     "discount": "",
                     "discount_detail": "5 case offer on 1L/500ML",
                     "discount_description": "Kinley 5 case sit amet, consectetur amet consectetur",
+                    "brand": "coke",
+                    "volume": 2
                 },
                 {
                     "sku": "CCPPID14",
@@ -324,6 +343,8 @@ window.addEventListener('message', function (eventData) {
                     "discount": "",
                     "discount_detail": "5 case offer on 1L/500ML",
                     "discount_description": "Kinley 5 case sit amet, consectetur amet consectetur",
+                    "brand": "sprite",
+                    "volume": 0.250
                 },
                 {
                     "sku": "CCPPID15",
@@ -338,6 +359,8 @@ window.addEventListener('message', function (eventData) {
                     "discount": "",
                     "discount_detail": "5 case offer on 1L/500ML",
                     "discount_description": "Kinley 5 case sit amet, consectetur amet consectetur",
+                    "brand": "sprite",
+                    "volume": 2
                 },
                 {
                     "sku": "CCPPID16",
@@ -352,6 +375,8 @@ window.addEventListener('message', function (eventData) {
                     "discount": "",
                     "discount_detail": "5 case offer on 1L/500ML",
                     "discount_description": "Kinley 5 case sit amet, consectetur amet consectetur",
+                    "brand": "coke",
+                    "volume": 1
                 }
             ]
         }
