@@ -6,7 +6,8 @@ function loadPageContent(page, data) {
         insertSearchBar();
         insertTabContainer();
         insertPromotionsContainer();
-        insertOrderHistoryProducts();
+        // JAY
+        // insertOrderHistoryProducts();
         insertFilterBar();
         insertProducts(config.products);
         insertInnerProducts(config.products);
@@ -22,6 +23,13 @@ function loadPageContent(page, data) {
             $(this).siblings(".addmore__qty").css("opacity", "1");
             $(this).siblings(".addmore__qty").css("display", "block");
         });
+        
+        console.log("12.213 => ", config.products);
+        
+        for (let pObj of config.products) {
+            getAllProducts.push(...pObj.items);
+        }
+//         getAllProducts = config.products.map(p => p.item);
     }
 
 
@@ -172,10 +180,19 @@ function insertPromotionsContainer() {
 
 }
 
-function insertOrderHistoryProducts() {
-    $("#orderhistory_container").prepend(`<p class="products__title">${config.recent_order.title}</p>`)
-    config.recent_order.products.map((product) => {
-        $("#orderhistory_container__inner").append(`
+function insertOrderHistoryProducts(data) {
+    console.log("Inside == . ", data);
+    // console.log("INSide the insertOrderHistoryProducts fubc => ", config.recent_order, data);
+    var titleEle = ".recent_order_title";
+    $(titleEle).empty();
+    $("#orderhistory_container").prepend(`<p class="products__title recent_order_title">${config.recent_order.title}</p>`)
+    // $("#orderhistory_container").prepend(`<p class="products__title recent_order_title">${config.recent_order.title}</p>`)
+    var elementNode = "#orderhistory_container__inner";
+    $(elementNode).empty();
+    // JAY
+    data.map((product) => {
+    // config.recent_order.products.map((product) => {
+        $(elementNode).append(`
             
             <div class="order__history__wrapper">
                 <div class="history__details">
@@ -230,12 +247,12 @@ function insertFavouriteProducts() {
             <div class="product-card">
                 <div class="product-tumb favourite">
                     <div class="innerbox favourite">
-                        <embed src=${item.images} />
+                        <embed src=${item.icon} />
                     </div>
                 </div>
                 <div class="product__details inner">
                     <div class="product__text__wrapper">
-                        <p class="product__name">${item.product_name}</p>
+                        <p class="product__name">${item.name}</p>
                         <p class="product__quantity">${item.description}</p>
                         <p class="product__price">Rs. ${item.price}</p>
                     </div>
@@ -322,12 +339,12 @@ function insertInnerProducts(products) {
                 <div class="product-card">
                     <div class="product-tumb inner">
                         <div class="innerbox">
-                            <img class="img__wrapper inner" src=${item.image} alt="">
+                            <img class="img__wrapper inner" src=${item.icon} alt="">
                         </div>
                     </div>
                     <div class="product__details inner">
                         <div class="product__text__wrapper">
-                            <p class="product__name">${item.product_name}</p>
+                            <p class="product__name">${item.name} - ${item.listing_type}</p>
                             <p class="product__quantity">${item.description}</p>
                             <p class="product__price">Rs. ${item.price}</p>
                         </div>
@@ -373,6 +390,7 @@ function debounce(func, timeout = 300) {
 function saveInput(node) {
     var filter = "keywords";
     var keyword = node.value;
+    console.log("Get ALL products", getAllProducts);
     var filteredData = getAllProducts.filter(function (obj) {
         if (obj[filter] != "") {
             return obj[filter].includes(keyword);
@@ -392,7 +410,7 @@ function searchProducts(node) {
         $("#search_product_wrap").append(`
             <div class="product searchproducts">
                 <div class="left__wrapper">
-                    <div class="name">${item.name}</div>
+                    <div class="name">${item.name} - ${item.listing_type}</div>
                     <div class="description">${item.description}</div>
                     <div class="price">Rs. ${item.price}</div>
                 </div>
@@ -486,6 +504,15 @@ function switchTabs(id) {
             break;
         default:
             break;
+    }
+
+    // JAY
+    if (id == 2) {
+        // fire an event to get order history
+        window.parent.postMessage(JSON.stringify({
+            event_code: 'custom-recent-order-event',
+            data: { phone: config.phone }
+        }), '*'); 
     }
 }
 
@@ -609,11 +636,13 @@ function sortProducts(products, sortBy) {
 }
 
 function updateCheckoutCartData(data, type) {
+    // JAY
     if (Object.keys(cartData).length == 0) {
         cartData[data.sku] = {
             "product_data": data,
             "quantity": 1
         }
+        // insertSelectedCoupon(config.checkout.discounts[0]);
         processQ(cartData, data.sku);
         return;
     }

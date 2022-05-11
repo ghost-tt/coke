@@ -11,7 +11,11 @@
 
 window.addEventListener('message', function (eventData) {
     console.log("local test 2 file called --> ", eventData.data);
-    let parsedEventData = JSON.parse(eventData.data);
+    let parsedEventData = eventData.data;    
+    if (typeof eventData.data == 'string') {
+            parsedEventData = JSON.parse(eventData.data);    
+    }
+
     console.log("local testing 2 ashish case 2 ", parsedEventData.data);
     
     if(parsedEventData.event_code === "custom-parent-client-event" && parsedEventData.data) {
@@ -29,7 +33,6 @@ window.addEventListener('message', function (eventData) {
             data: parsedEventData.data
         }), '*');
     }
-
     if(parsedEventData.event_code === "custom-checkout-event") {
         console.log("innner iframe called with parsed Data for checkout ---> ", parsedEventData.data);
         parent.postMessage(JSON.stringify({
@@ -42,6 +45,22 @@ window.addEventListener('message', function (eventData) {
         console.log("Final applied coupons data in childframe.js ---> ", parsedEventData.data);
         document.querySelector("iframe").contentWindow.postMessage(JSON.stringify({
             event_code: 'custom-parentchild-client-checkout-event',
+            data: parsedEventData.data
+        }), '*');
+    }
+
+    if(parsedEventData.event_code === "custom-parent-client-recent-order-event") {
+        console.log("Final recent order data childframe.js ---> ", parsedEventData.data);
+        document.querySelector("iframe").contentWindow.postMessage(JSON.stringify({
+            event_code: 'custom-parentchild-client-recent-order-event',
+            data: parsedEventData.data
+        }), '*');
+    }
+
+    if(parsedEventData.event_code === "custom-recent-order-event") {
+        console.log("Recent order event childframe.js ---> ", parsedEventData.data);
+        parent.postMessage(JSON.stringify({
+            event_code: 'custom-parenttoroot-recent-order-event',
             data: parsedEventData.data
         }), '*');
     }

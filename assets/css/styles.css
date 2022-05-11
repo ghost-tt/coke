@@ -348,8 +348,7 @@
 }
 
 .products__container .product-card .product-tumb.inner .innerbox {
-    width: 100%;
-    /* width: 29.45px; */
+    width: 29.45px;
     height: 95.2px;
     position: relative;
 }

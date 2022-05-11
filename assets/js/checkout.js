@@ -13,7 +13,8 @@ function loadCheckoutPageContent(page, data) {
             expandMore(this);
         });
 
-        $('.buyout__btn').click(function () {
+        $('.buyout__btn1').click(function () {
+//             window.location.replace('https://wa.me/+94773233440?text=show%20cart');
             sendDataToBot();
         });
     }
@@ -23,14 +24,19 @@ function insertOrderCart(orderCart, skuid) {
     $("#favourites_container_title").show();
     if (Object.keys($(`#${skuid}`)).length !== 0) {
         let product = orderCart[skuid]["product_data"]
+        let type = orderCart[skuid]["product_data"]["listing_type"];
+        if (type) {
+            type = `- ${type}`
+        } else {
+            type = '';
+        }
         if(orderCart[skuid]["quantity"] !== 0) {
             $(`#${skuid}`).replaceWith(`
                 <div class="order__section" id=${product.sku}>
                     <div class="details__section">
-                        <div class="name">${product.name}</div>
+                        <div class="name">${product.name} ${type}</div>
                         <div class="discount__offer">
                             <span class="price">Rs. ${product.price}</span>
-                            <span class="discount">Rs. ${product.costprice}</span>
                         </div>
                         <div class="discount__detail">${product.discount_detail}</div>
                         <div class="discount__detail__bar">
@@ -71,13 +77,18 @@ function insertOrderCart(orderCart, skuid) {
         }
     } else {
         let product = orderCart[skuid]["product_data"]
+        let type = orderCart[skuid]["product_data"]["listing_type"];
+        if (type) {
+            type = `- ${type}`
+        } else {
+            type = '';
+        }
         $("#order_checkout_cart").append(`
             <div class="order__section" id=${product.sku}>
                 <div class="details__section">
-                    <div class="name">${product.name}</div>
+                    <div class="name">${product.name} ${type}</div>
                     <div class="discount__offer">
                         <span class="price">Rs. ${product.price}</span>
-                        <span class="discount">Rs. ${product.costprice}</span>
                     </div>
                     <div class="discount__detail">${product.discount_detail}</div>
                     <div class="discount__detail__bar">
@@ -126,9 +137,9 @@ function insertSelectedCoupon(discountData, type, data) {
     }
     $(elementNode).empty();
     discountPrice = 0;
-    $(elementNode).empty();
     $('#title_loader').empty();
     discountData.map((discount, index) => {
+        console.log('Here it comes ==+=> ', discount, index);
         discountPrice += discount.discountedPrice;
         let qty = discount.quantity > 0 ? `<span>${discount.quantity}</span>` : "";
         $(elementNode).append(`
@@ -151,13 +162,20 @@ function insertSelectedCoupon(discountData, type, data) {
                                 <div class="title">Applied Promo</div>
                                 <div class="discount_name">${discount.offer_name}</div>
                             </div>
-                            <div class="discount__detail">${qty} ${discount.display_message}</div>
+                            <div class="discount__detail">${discount.display_message}</div>
                         </div>
                     </div>
                 </div>
             </div>
         `)
     });
+
+    console.log('CHecking discount price', discountPrice, orderCartData);
+    if (+discountPrice > 0) {
+        showDiscountLable();
+    } else {
+        hideDiscountLable();
+    }
     recalculateOrderSummary(data);
 }
 
@@ -207,7 +225,7 @@ function insertSelectedCoupon(discountData, type, data) {
 
 function insertDistributorAddress() {
     $("#distributor_details_container").append(`
-        <div class="title">Distributor address</div>
+        <div class="title">Distributor Details</div>
         <div class="summary__wrapper">
             <div class="detail" style="margin:0;">${config.checkout.distributor_details.name}</div>
         </div>
@@ -223,8 +241,8 @@ function insertOrderSummary() {
                     <div class="item" orderValue="0" id="item_total">$0</div>
                 </div>
                 <div class="price__item" id="discount_perc">
-                    <div class="key red">Discount</div>
-                    <div class="item red" orderValue="0" id="discout_perc">$0</div>
+                     <div class="key red">Discount</div>
+                     <div class="item red" orderValue="0" id="discout_perc">$0</div>
                 </div>
             </div>
             <div class="price__item total">
@@ -233,6 +251,16 @@ function insertOrderSummary() {
             </div>
         </div>
     `)
+
+    hideDiscountLable();
+}
+
+function hideDiscountLable() {
+    $("#discount_perc").hide();
+}
+
+function showDiscountLable() {
+    $("#discount_perc").show();
 }
 
 function insertDeliveryDetails() {
@@ -312,6 +340,14 @@ function recalculateOrderSummary(data) {
     let discount = discountPrice;
     let total = data.subtotal - discount;
 
+    if (data.products) {
+        const values = Object.values(data.products);
+        const itemsWithNoQuantity = values.filter(obj => obj.quantity == 0);
+        if (values.length == itemsWithNoQuantity.length) {
+            data.subtotal = 0;
+            total = 0;
+        }
+    }
     $('.item').fadeOut(300, function () {
         $('#title_loader').empty();
         $('#loader_coupon').empty();
@@ -409,8 +445,20 @@ function sendDataToBot() {
 }
 
 function passDataToBot(data) {
+    console.log("BEFORERERER +++++++++++", data);
     window.parent.postMessage(JSON.stringify({
         event_code: 'custom-checkout-event',
         data: data
     }), '*');
+
+    const values = Object.values(data);
+    const totalLength = values ? values.length : 0;
+    const itemsWithNoQuantity = values.filter(obj => obj.quantity == 0);
+    
+    console.log("Data to compare => ", values, itemsWithNoQuantity, totalLength)
+    if (totalLength == itemsWithNoQuantity.length) {
+        $('#item_total').text(0);
+        $('#item_total').attr("orderValue", 0);
+    }
+    console.log("AFTER ++");
 }
