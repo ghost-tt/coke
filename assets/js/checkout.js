@@ -22,6 +22,7 @@ function loadCheckoutPageContent(page) {
 }
 
 function insertOrderCart(orderCart, skuid) {
+    if(!orderCart[skuid]) return;
     if (Object.keys($(`#${skuid}`)).length !== 0) {
         let product = orderCart[skuid]["product_data"]
         if(orderCart[skuid]["quantity"] !== 0) {
@@ -116,6 +117,11 @@ function insertOrderCart(orderCart, skuid) {
         `)
     }
 
+    $('input').on('input', function() {
+        if(this.type === "search") return;
+        this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1').replace(/^0[^.]/, '0');
+        return;
+    });
 }
 
 function insertSelectedCoupon(discountData, type, data) {

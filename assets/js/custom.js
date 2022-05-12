@@ -414,10 +414,10 @@ function searchProducts(node) {
                     <div class="price">Rs. ${item.price}</div>
                 </div>
                 <div class="right__wrapper">
-                    <div class="product-bottom-details" product="${encodeURIComponent(JSON.stringify(item))}">
+                    <div class="product-bottom-details" id="promotions-add-searchbox-${item.sku}" product="${encodeURIComponent(JSON.stringify(item))}">
                         <div class="btn">ADD</div>
                     </div>
-                    <div class="counter__wrapper hide">
+                    <div class="counter__wrapper hide"  id="promotions-counter-searchbox-${item.sku}">
                         <div class="counter__container checkout">
                             <div class="counter__box__container">
                                 <div class="counter__minus" id="minus" product="${encodeURIComponent(JSON.stringify(item))}">
@@ -425,7 +425,7 @@ function searchProducts(node) {
                                 </div>
                             </div>
                         
-                            <input id="counter_input_${item.sku}" class="counter__input home" type="text" value="1" size="2" maxlength="2" autocomplete="off" previous-value="1" />
+                            <input id="counter_input_searchbox_${item.sku}" class="counter__input home" type="text" value="1" size="2" maxlength="2" autocomplete="off" previous-value="1" />
                             <div class="counter__box__container">
                                 <div class="counter__plus" id="plus" product="${encodeURIComponent(JSON.stringify(item))}">
                                     <img src="/assets/images/png/plus.png" />
@@ -443,6 +443,15 @@ function searchProducts(node) {
         `);
     });
     if (node.length !== 0) {
+
+        for(let key in cartData) {
+            $(`#promotions-add-searchbox-${key}`).hide();
+            $(`#promotions-counter-searchbox-${key}`).show();
+            $(`#counter_input_searchbox_${key}`).val(parseInt(cartData[key].quantity));
+            $(`#counter_input_searchbox_${key}`).change();
+            $(`#counter_input_searchbox_${key}`).attr("previous-value", parseInt(cartData[key].quantity) - 1 > 0 ? parseInt(cartData[key].quantity) - 1 : 0);
+        }
+
         $('.product-bottom-details').click(function () {
             addProducts(this)
         });
