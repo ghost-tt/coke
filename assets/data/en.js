@@ -14,7 +14,7 @@ window.addEventListener('message', function (eventData) {
         setTimeout(() => {
             loadPageContent("homepage", parsedEventData.data);
             loadCheckoutPageContent("checkoutpage", parsedEventData.data);
-        }, 2500);
+        }, 500);
     }
     
     if (parsedEventData.event_code === "custom-parentchild-client-checkout-event") {

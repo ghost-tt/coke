@@ -9,19 +9,28 @@ function loadCheckoutPageContent(page, data) {
         insertOrderSummary();
         insertDeliveryDetails();
 
-        $('.more__cta').click(function () {
+        $('.more__cta').click(function (e) {
+            e.preventDefault();
+            e.stopPropagation();
             expandMore(this);
         });
 
         $('.buyout__btn1').click(function () {
-//             window.location.replace('https://wa.me/+94773233440?text=show%20cart');
+            e.preventDefault();
+            e.stopPropagation();
             sendDataToBot();
         });
+
+        $('input').on('input', function() {
+            if(this.type === "search") return;
+            this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1').replace(/^0[^.]/, '0');
+            return;
+        });
+    
     }
 }
 
 function insertOrderCart(orderCart, skuid) {
-    $("#favourites_container_title").show();
     if (Object.keys($(`#${skuid}`)).length !== 0) {
         let product = orderCart[skuid]["product_data"]
         let type = orderCart[skuid]["product_data"]["listing_type"];
@@ -64,7 +73,7 @@ function insertOrderCart(orderCart, skuid) {
                                 </div>
                                 <div class="addmore__qty">
                                     <div class="submit">
-                                        <img src="/assets/images/svg/icons8-ok.svg" />
+                                        <img src="/coke/assets/images/svg/icons8-ok.svg" />
                                     </div>
                                 </div>
                             </div>
@@ -116,7 +125,7 @@ function insertOrderCart(orderCart, skuid) {
                             </div>
                             <div class="addmore__qty">
                                 <div class="submit">
-                                    <img src="/assets/images/svg/icons8-ok.svg" />
+                                    <img src="/coke/assets/images/svg/icons8-ok.svg" />
                                 </div>
                             </div>
                         </div>
@@ -126,9 +135,20 @@ function insertOrderCart(orderCart, skuid) {
         `)
     }
 
+    $('input').on('input', function () {
+        if (this.type === "search") return;
+        this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1').replace(/^0[^.]/, '0');
+        return;
+    });
 }
 
 function insertSelectedCoupon(discountData, type, data) {
+    if (!discountData && !type && !data) return;
+    if (Object.keys(cartData).length === 0) {
+        emptyContainerData();
+        return;
+    }
+
     var elementNode = "";
     if (type === "update") {
         elementNode = ".coupon__banner__container";
@@ -227,6 +247,7 @@ function insertDistributorAddress() {
     $("#distributor_details_container").append(`
         <div class="title">Distributor Details</div>
         <div class="summary__wrapper">
+            <div class="detail" style="margin:0;">${config.checkout.distributor_details.id}</div>
             <div class="detail" style="margin:0;">${config.checkout.distributor_details.name}</div>
         </div>
     `)
@@ -238,16 +259,16 @@ function insertOrderSummary() {
             <div class="price__cart__box">
                 <div class="price__item">
                     <div class="key bold">Item total</div>
-                    <div class="item" orderValue="0" id="item_total">$0</div>
+                    <div class="item" orderValue="0" id="item_total">0</div>
                 </div>
                 <div class="price__item" id="discount_perc">
-                     <div class="key red">Discount</div>
-                     <div class="item red" orderValue="0" id="discout_perc">$0</div>
+                    <div class="key red">Discount</div>
+                    <div class="item red" orderValue="0" id="discout_perc">0</div>
                 </div>
             </div>
             <div class="price__item total">
                 <div class="key bold total">Grand Total</div>
-                <div class="item red total" orderValue="0" id="grand_total">$0</div>
+                <div class="item red total" orderValue="0" id="grand_total">0</div>
             </div>
         </div>
     `)
@@ -275,7 +296,9 @@ function insertDeliveryDetails() {
 }
 
 $(document).ready(function () {
-    $('#minus').click(function () {
+    $('#minus').click(function (e) {
+        e.preventDefault();
+        e.stopPropagation();
         var $input = $('#counter_input');
         var count = parseInt($input.val()) - 1;
         count = count < 1 ? 1 : count;
@@ -283,7 +306,9 @@ $(document).ready(function () {
         $input.change();
         return false;
     });
-    $('#plus').click(function () {
+    $('#plus').click(function (e) {
+        e.preventDefault();
+        e.stopPropagation();
         var $input = $('#counter_input');
         $input.val(parseInt($input.val()) + 1);
         $input.change();
@@ -329,10 +354,68 @@ function hideDiscount() {
 } */
 
 function processQ(data, skuid) {
+    // syncContainers(skuid);
+    if (Object.keys(data).length === 0) {
+        emptyContainerData();
+        return;
+    }
     insertOrderCart(data, skuid);
     passDataToBot(data);
     recalculateCart();
 }
+
+function syncContainers(skuid) {
+    for (let key in cartData) {
+        $(`#promotions-add-searchbox-${key}`).hide();
+        $(`#promotions-counter-searchbox-${key}`).show();
+        $(`#counter_input_searchbox_${key}`).val(parseInt(cartData[key].quantity));
+        $(`#counter_input_searchbox_${key}`).change();
+        $(`#counter_input_searchbox_${key}`).attr("previous-value", parseInt(cartData[key].quantity) - 1 > 0 ? parseInt(cartData[key].quantity) - 1 : 0);
+
+        $(`#promotions-add-${key}`).hide();
+        $(`#promotions-counter-${key}`).show();
+        $(`#counter_input_${key}`).val(parseInt(cartData[key].quantity));
+        $(`#counter_input_${key}`).change();
+        $(`#counter_input_${key}`).attr("previous-value", parseInt(cartData[key].quantity) - 1 > 0 ? parseInt(cartData[key].quantity) - 1 : 0);
+
+    }
+    if (!cartData[skuid]) {
+        $(`#promotions-add-${skuid}`).show();
+        $(`#promotions-counter-${skuid}`).hide();
+        // $(`#counter_input_${skuid}`).val(1);
+        // $(`#counter_input_${skuid}`).change();
+        // $(`#counter_input_${skuid}`).attr("previous-value", 1);
+    }
+}
+
+function emptyContainerData() {
+    $("#order_checkout_cart").empty();
+
+    $('#title_loader').html(``);
+    $('#loader_coupon').html(``);
+    $('#loader_summary_bar').html(``);
+    
+    $('#text__loading').text(``);
+    $('#continue_cta').addClass("disabled");
+
+    $('#item_total').text(0);
+    $('#item_total').attr("orderValue", 0);
+
+    $('#discout_perc').text(0);
+    $('#discout_perc').attr("orderValue", 0);
+
+    $('#grand_total').text(0);
+    $('#grand_total').attr("orderValue", 0);
+
+    $('#sticky_cart_price').text(`Rs. 0`);
+    $('#sticky_cart_quantity').text(`0 Item`);
+    $(".sticky__footer").hide();
+
+    $("#coupon_container").empty();
+    $("#notification_bar").empty();
+    $('#numberCircle').hide();
+}
+
 
 function recalculateOrderSummary(data) {
     /* Calculate totals */
@@ -376,20 +459,20 @@ function recalculateCart() {
     /* Sum up row totals */
     for (const key in cartData) {
         // subtotal += parseFloat(cartData[key]["product_data"].price);
-        if(cartData[key]["product_data"].unit) {
+        if (cartData[key]["product_data"].unit) {
             subtotal = subtotal + parseFloat(cartData[key]["product_data"].price) * parseInt(cartData[key]["product_data"].unit * parseInt(cartData[key]["quantity"]));
         } else {
             subtotal = subtotal + parseFloat(cartData[key]["product_data"].price) * parseInt(cartData[key]["quantity"]);
             // subtotal = subtotal * (parseInt(cartData[key]["quantity"]) ? parseInt(cartData[key]["quantity"]) : 1);
         }
     }
-    
+
     /* Update totals display */
-    $('.item').fadeOut(300, function () {
+    $('.item').fadeOut(0, function () {
         $('#title_loader').html(`<div>Personalizing Promotions...</div>`);
         $('#loader_coupon').html(`<div id="loading"></div>`);
         $('#loader_summary_bar').html(`<div id="loading"></div>`);
-        $('#notification_bar').html(`<div class="checkout_notification">Promotions Applied!</div>`);
+        $("#notification_bar").html(`<div class="checkout_notification">Promotions Applied!</div>`);
         $('#text__loading').text(`  (Recalculating...)`);
         $('#continue_cta').addClass("disabled");
 
@@ -405,7 +488,7 @@ function recalculateCart() {
         // $('#grand_total').html(`<div id="loading"></div>`);
         $('#grand_total').attr("orderValue", 0);
 
-        $('.item').fadeIn(300);
+        $('.item').fadeIn(0);
     });
 
     $('.sticky__footer').fadeIn().show();
@@ -414,6 +497,9 @@ function recalculateCart() {
     if ($("#numberCircle").attr("value") == 0) {
         $(".sticky__footer").hide();
         $("#numberCircle").hide();
+        setTimeout(() => {
+            $("#notification_bar").empty();
+        }, 400);
         return;
     }
     // $('.sticky__footer').fadeIn().show();

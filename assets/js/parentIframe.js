@@ -56,7 +56,7 @@ window.addEventListener('message', function (eventData) {
                 }
            }, '*');
             console.log("12", window.location);
-            window.location.href= 'https://wa.me/+94773233440?text=raise%20order';
+            window.location.href= 'https://wa.me/+94773233440?text=continue';
                         console.log("34");
             return;
         }
