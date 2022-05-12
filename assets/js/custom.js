@@ -18,6 +18,7 @@ function loadPageContent(page) {
 
         $('input').blur(function () {
             setTimeout(() => {
+                if(this.type === "search") return;
                 $($(this).siblings()[0]).fadeIn("slow").show();
                 $($(this).siblings()[1]).fadeIn("slow").show();
                 $(this).siblings(".addmore__qty").css("opacity", "0");
@@ -26,6 +27,7 @@ function loadPageContent(page) {
         });
         
         $('input').focus(function () {
+            if(this.type === "search") return;
             $($(this).siblings()[0]).fadeIn("slow").hide();
             $($(this).siblings()[1]).fadeIn("slow").hide();
             $(this).siblings(".addmore__qty").css("opacity", "1");
@@ -33,6 +35,7 @@ function loadPageContent(page) {
         });
 
         $('input').on('input', function() {
+            if(this.type === "search") return;
             this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1').replace(/^0[^.]/, '0');
             return;
         });
@@ -458,6 +461,7 @@ function emptySearch(node) {
     $("#search_product_wrap").empty();
     $("#search_product_box").fadeIn().hide();
     $("#search_input").val("");
+    $('.close__icon__box').hide();
 }
 
 function switchTabs(id) {
@@ -719,6 +723,9 @@ function updateCheckoutCartData(data, type) {
                     "product_data": data,
                     "quantity": q - 1
                 }
+                if(q === 1) {
+                    delete cartData[key];
+                }
             }
         } else {
             if (!cartData[data.sku]) {
@@ -768,6 +775,8 @@ function updateProductsBasedOnProducts(node, type) {
             if (type === "add") {
                 if (data.itemspercase <= parseInt(products[key].quantity)) {
                     showToastMessage(data.itemspercase);
+                    $(orderhistoryNode).show();
+                    $(node).hide();
                     return false;
                 }
                 orderhistoryNode = $(node).siblings(".counter__wrapper.orderhistory");
@@ -778,6 +787,9 @@ function updateProductsBasedOnProducts(node, type) {
                 $("#numberCircle").text(updatedValue);
             }
             if (type === "minus") {
+                if (data.itemspercase <= parseInt(products[key].quantity)) {
+                    return false;
+                }
                 orderhistoryNode = $(node).siblings(".repeat.orderhistory");
                 let numberCircleCount = $("#numberCircle").attr("value");
                 let parseCount = Number(numberCircleCount);

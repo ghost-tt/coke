@@ -22,7 +22,6 @@ function loadCheckoutPageContent(page) {
 }
 
 function insertOrderCart(orderCart, skuid) {
-    $("#favourites_container_title").show();
     if (Object.keys($(`#${skuid}`)).length !== 0) {
         let product = orderCart[skuid]["product_data"]
         if(orderCart[skuid]["quantity"] !== 0) {
@@ -120,6 +119,11 @@ function insertOrderCart(orderCart, skuid) {
 }
 
 function insertSelectedCoupon(discountData, type, data) {
+    if(!discountData && !type && !data) return; 
+    if(Object.keys(cartData).length === 0) {
+        emptyContainerData();
+        return;
+    }
     var elementNode = "";
     if (type === "update") {
         elementNode = ".coupon__banner__container";
@@ -220,16 +224,16 @@ function insertOrderSummary() {
             <div class="price__cart__box">
                 <div class="price__item">
                     <div class="key bold">Item total</div>
-                    <div class="item" orderValue="0" id="item_total">$0</div>
+                    <div class="item" orderValue="0" id="item_total">0</div>
                 </div>
                 <div class="price__item" id="discount_perc">
                     <div class="key red">Discount</div>
-                    <div class="item red" orderValue="0" id="discout_perc">$0</div>
+                    <div class="item red" orderValue="0" id="discout_perc">0</div>
                 </div>
             </div>
             <div class="price__item total">
                 <div class="key bold total">Grand Total</div>
-                <div class="item red total" orderValue="0" id="grand_total">$0</div>
+                <div class="item red total" orderValue="0" id="grand_total">0</div>
             </div>
         </div>
     `)
@@ -301,6 +305,11 @@ function hideDiscount() {
 } */
 
 function processQ(data, skuid) {
+    if(Object.keys(data).length === 0) {
+        emptyContainerData();
+        return;
+    }
+    
     insertOrderCart(data, skuid);
     passDataToBot(data);
     let cardRecalculatedData = recalculateCart();
@@ -338,6 +347,35 @@ function processQ(data, skuid) {
             }
         ], false, cardRecalculatedData)
     }, 4000);
+}
+
+function emptyContainerData() {
+    $("#order_checkout_cart").empty();
+    
+    $('#title_loader').html(``);
+    $('#loader_coupon').html(``);
+    $('#loader_summary_bar').html(``);
+    $('#notification_bar').html(``);
+    
+    $('#text__loading').text(``);
+    $('#continue_cta').addClass("disabled");
+    
+    $('#item_total').text(0);
+    $('#item_total').attr("orderValue", 0);
+    
+    $('#discout_perc').text(0);
+    $('#discout_perc').attr("orderValue", 0);
+    
+    $('#grand_total').text(0);
+    $('#grand_total').attr("orderValue", 0);
+    
+    $('#sticky_cart_price').text(`Rs. 0`);
+    $('#sticky_cart_quantity').text(`0 Item`);
+    $(".sticky__footer").hide();
+    
+    $("#coupon_container").empty();
+    $('notification_bar').empty();
+    $('#numberCircle').hide();
 }
 
 function recalculateOrderSummary(data) {
