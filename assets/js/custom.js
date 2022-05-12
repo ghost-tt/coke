@@ -788,6 +788,8 @@ function updateProductsBasedOnProducts(node, type) {
             }
             if (type === "minus") {
                 if (data.itemspercase <= parseInt(products[key].quantity)) {
+                    $(node).hide();
+                    $(orderhistoryNode).show();
                     return false;
                 }
                 orderhistoryNode = $(node).siblings(".repeat.orderhistory");
