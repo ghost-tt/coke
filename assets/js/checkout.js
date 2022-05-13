@@ -15,7 +15,7 @@ function loadCheckoutPageContent(page, data) {
             expandMore(this);
         });
 
-        $('.buyout__btn1').click(function () {
+        $('.buyout__btn1').click(function (e) {
             e.preventDefault();
             e.stopPropagation();
             sendDataToBot();
@@ -31,7 +31,6 @@ function loadCheckoutPageContent(page, data) {
 }
 
 function insertOrderCart(orderCart, skuid) {
-    if (!orderCart[skuid]) return;
     if (Object.keys($(`#${skuid}`)).length !== 0) {
         let product = orderCart[skuid]["product_data"]
         let type = orderCart[skuid]["product_data"]["listing_type"];
@@ -412,7 +411,7 @@ function emptyContainerData() {
     $('#loader_summary_bar').html(``);
     
     $('#text__loading').text(``);
-    $('#continue_cta').addClass("enabled");
+    $('#continue_cta').addClass("disabled");
 
     $('#item_total').text(0);
     $('#item_total').attr("orderValue", 0);
@@ -452,7 +451,7 @@ function recalculateOrderSummary(data) {
         $('#loader_coupon').empty();
         $('#loader_summary_bar').empty();
         $('#text__loading').empty();
-        $('#continue_cta').removeClass("enabled");
+        $('#continue_cta').removeClass("disabled");
 
         $('#item_total').text(data.subtotal.toFixed(2));
         $('#item_total').attr("orderValue", data.subtotal.toFixed(2));
@@ -490,7 +489,7 @@ function recalculateCart() {
         $('#loader_summary_bar').html(`<div id="loading"></div>`);
         $("#notification_bar").html(`<div class="checkout_notification">Promotions Applied!</div>`);
         $('#text__loading').text(`  (Recalculating...)`);
-        $('#continue_cta').addClass("enabled");
+        $('#continue_cta').addClass("disabled");
 
         // $('#item_total').html(`<div id="loading"></div>`);
         $('#item_total').attr("orderValue", 0);
