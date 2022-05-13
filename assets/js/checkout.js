@@ -284,13 +284,28 @@ function showDiscountLable() {
     $("#discount_perc").show();
 }
 
+// function insertDeliveryDetails() {
+//     $("#delivery_details_container").append(`
+//         <div class="title">Delivery details</div>
+//         <div class="details__wrapper">
+//             <div class="address">${config.checkout.delivery_details.address}</div>
+//             <div class="mobile">${config.checkout.delivery_details.phone}</div>
+//             <div class="email">${config.checkout.delivery_details.email}</div>
+//         </div>
+//     `)
+// }
+
 function insertDeliveryDetails() {
+    // <div class="address">${config.checkout.delivery_details.address}</div>
+    //         <div class="mobile">${config.checkout.delivery_details.phone}</div>
+    //         <div class="email">${config.checkout.delivery_details.email}</div>
     $("#delivery_details_container").append(`
         <div class="title">Delivery details</div>
         <div class="details__wrapper">
-            <div class="address">${config.checkout.delivery_details.address}</div>
-            <div class="mobile">${config.checkout.delivery_details.phone}</div>
-            <div class="email">${config.checkout.delivery_details.email}</div>
+            <div class="grayColour">${config.checkout.delivery_details.id}</div>
+            <div class="grayColour">${config.checkout.delivery_details.name}</div>
+            <div class="grayColour">${config.checkout.delivery_details.address}</div>
+            <div class="grayColour">${config.checkout.delivery_details.phone}</div>
         </div>
     `)
 }
