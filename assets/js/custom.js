@@ -47,8 +47,8 @@ function loadPageContent(page, data) {
     }
 
     document.addEventListener('click', function (e) {
-        e.preventDefault();
-        e.stopPropagation();
+        // e.preventDefault();
+        // e.stopPropagation();
         emptySearch();
     });
 
@@ -78,11 +78,13 @@ function loadPageContent(page, data) {
 
     $('.counter__plus').click(function (e) {
         e.preventDefault();
+        e.stopPropagation();
         updateCounter(this, "add");
     });
 
     $('.item-drop').click(function (e) {
-        e.preventDefault();
+        // e.preventDefault();
+        // e.stopPropagation();
         updateDropDownMenu(this);
     });
 
@@ -484,6 +486,15 @@ function searchProducts(node) {
         `);
     });
     if (node.length !== 0) {
+
+        /* for (let key in cartData) {
+            $(`#promotions-add-searchbox-${key}`).hide();
+            $(`#promotions-counter-searchbox-${key}`).show();
+            $(`#counter_input_searchbox_${key}`).val(parseInt(cartData[key].quantity));
+            $(`#counter_input_searchbox_${key}`).change();
+            $(`#counter_input_searchbox_${key}`).attr("previous-value", parseInt(cartData[key].quantity) - 1 > 0 ? parseInt(cartData[key].quantity) - 1 : 0);
+        } */
+
         $('.product-bottom-details').click(function (e) {
             e.preventDefault();
             e.stopPropagation();
@@ -693,11 +704,21 @@ function updateDropDownMenu(dpItem) {
 }
 
 function groupProductsByCategory(productsItemsJson, sortBy) {
+    let sortedProducts = [];
     let productsArrayCopy = JSON.parse(JSON.stringify(productsItemsJson));
     let groupedItems = groupProductsIntoItems(productsArrayCopy, sortBy);
     let sortCategory = sortProductsByCategory(groupedItems);
-    let sortedProducts = sortedByProducts(sortCategory, productsArrayCopy, sortBy);
+    if(sortBy === "brand") {
+        let uniqueListArr = getUniqueListBy(productsArrayCopy, 'brand');
+        sortedProducts = sortedByProducts(sortCategory, uniqueListArr, sortBy);
+    } else {
+        sortedProducts = sortedByProducts(sortCategory, productsArrayCopy, sortBy);
+    }
     return sortedProducts;
+}
+
+function getUniqueListBy(arr, key) {
+    return [...new Map(arr.map(item => [item[key], item])).values()]
 }
 
 function groupProductsIntoItems(productsArray, sortBy) {
