@@ -70,15 +70,11 @@ function loadPageContent(page, data) {
         addProducts(this)
     });
 
-    $('.counter__minus').click(function (e) {
-        e.preventDefault();
-        e.stopPropagation();
+    $('.counter__minus').click(function (e) {;
         updateCounter(this, "minus");
     });
 
-    $('.counter__plus').click(function (e) {
-        e.preventDefault();
-        e.stopPropagation();
+    $('.counter__plus').click(function (e) {;
         updateCounter(this, "add");
     });
 
