@@ -63,14 +63,14 @@ function insertOrderCart(orderCart, skuid) {
                                     </div>
                                 </div>
                             
-                                <input id="counter_input" class="counter__input" type="text" value='${orderCart[skuid]["quantity"]}' size="2" maxlength="2" />
+                                <input id="counter_input_${product.sku}" class="counter__input checkout" type="text" value='${orderCart[skuid]["quantity"]}' size="2" maxlength="2" autocomplete="off" previous-value=${orderCart[skuid]["quantity"]} />
                                 <div class="counter__box__container">
                                     <div class="counter__plus" id="plus" product="${encodeURIComponent(JSON.stringify(product))}" onclick="updateCounterDataFromCheckout('add')">
                                         <img src="/assets/images/png/plus.png" />
                                     </div>
                                 </div>
-                                <div class="addmore__qty">
-                                    <div class="submit">
+                                <div class="addmore__qty checkout">
+                                    <div class="submit" product="${encodeURIComponent(JSON.stringify(product))}">
                                         <img src="/assets/images/svg/icons8-ok.svg" />
                                     </div>
                                 </div>
@@ -102,7 +102,7 @@ function insertOrderCart(orderCart, skuid) {
                         <img src="/assets/images/png/product.png" />
                     </div>
 
-                    <div class="counter__wrapper checkout">
+                    <div class="counter__wrapper checkout" id="checkout-counter-${product.sku}">
                         <div class="counter__container checkout">
                             <div class="counter__box__container">
                                 <div class="counter__minus" id="minus" product="${encodeURIComponent(JSON.stringify(product))}" onclick="updateCounterDataFromCheckout('minus')">
@@ -110,14 +110,14 @@ function insertOrderCart(orderCart, skuid) {
                                 </div>
                             </div>
                         
-                            <input id="counter_input" class="counter__input" type="text" value="1" size="2" maxlength="2" />
+                            <input id="counter_input_${product.sku}" class="counter__input checkout" type="text" value="1" size="2" maxlength="2" autocomplete="off" previous-value=${orderCart[skuid]["quantity"]} />
                             <div class="counter__box__container">
                                 <div class="counter__plus" id="plus" product="${encodeURIComponent(JSON.stringify(product))}" onclick="updateCounterDataFromCheckout('add')">
                                     <img src="/assets/images/png/plus.png" />
                                 </div>
                             </div>
-                            <div class="addmore__qty">
-                                <div class="submit">
+                            <div class="addmore__qty checkout">
+                                <div class="submit" product="${encodeURIComponent(JSON.stringify(product))}">
                                     <img src="/assets/images/svg/icons8-ok.svg" />
                                 </div>
                             </div>
@@ -128,10 +128,58 @@ function insertOrderCart(orderCart, skuid) {
         `)
     }
 
-    $('input').on('input', function () {
-        if (this.type === "search") return;
+    $('input').blur(function () {
+        setTimeout(() => {
+            if(this.type === "search") return;
+            $($(this).siblings()[0]).fadeIn("slow").show();
+            $($(this).siblings()[1]).fadeIn("slow").show();
+            $(this).siblings(".addmore__qty").css("opacity", "0");
+            $(this).siblings(".addmore__qty").css("display", "none");
+        }, 500);
+    });
+    
+    $('input').focus(function () {
+        if(this.type === "search") return;
+        $($(this).siblings()[0]).fadeIn("slow").hide();
+        $($(this).siblings()[1]).fadeIn("slow").hide();
+        $(this).siblings(".addmore__qty").css("opacity", "1");
+        $(this).siblings(".addmore__qty").css("display", "block");
+    });
+
+    $('input').on('input', function() {
+        if(this.type === "search") return;
         this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1').replace(/^0[^.]/, '0');
         return;
+    });
+
+    $('.submit').click(function () {
+        let counterInput = $(this).parent().siblings(".counter__input");
+        let currentValue = $(counterInput).val();
+        let previousValue = $(counterInput).attr("previous-value");
+        $(counterInput).val(parseInt(previousValue));
+        $(counterInput).change();
+        $($(this).parent().siblings()[0]).fadeIn("slow").show();
+        $($(this).parent().siblings()[2]).fadeIn("slow").show();
+        $(this).parent(".addmore__qty").css("opacity", "0");
+        $(this).parent(".addmore__qty").css("display", "none");
+
+        if (currentValue != 0) {
+            let productData = $(this).attr("product");
+            let decodedProductData = JSON.parse(decodeURIComponent(productData));
+            delete cartData[decodedProductData.sku];
+            counterInput.val(0);
+            counterInput.change();
+            counterInput.attr("previous-value", 0);
+            let numberCircleCount = $("#numberCircle").attr("value");
+            let parseCount = Number(numberCircleCount)
+            let updatedValue = parseCount - previousValue;
+            $("#numberCircle").attr("value", updatedValue);
+            $("#numberCircle").text(updatedValue);
+            for (let i = 0; i < currentValue; i++) {
+                updateCounterDataFromCheckout("add")
+                // updateCounter($($(counterInput).siblings()[1]).children()[0], "add");
+            }
+        }
     });
 }
 

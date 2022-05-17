@@ -269,12 +269,25 @@
     display: none;
 }
 
+.counter__container .addmore__qty.checkout { 
+    right: 18%;
+    animation-name: slideToRightcheckout;
+}
+
 @keyframes slideToRight {
     0%   {left: 45%;}
     25%  {left: 45%;}
     50%  {left: 63%;}
     75%  {left: 63%;}
     100% {left: 63%;}
+}
+
+@keyframes slideToRightcheckout {
+    0%   {left: 45%;}
+    25%  {left: 45%;}
+    50%  {left: 65.5%;}
+    75%  {left: 65.5%;}
+    100% {left: 65.5%;}
 }
 
 .counter__container .counter__minus,
