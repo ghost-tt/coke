@@ -110,9 +110,13 @@
     align-self: flex-start;
 }
 
+.search__product__box .right__wrapper.searchbox {
+    width: 111px;
+}
+
 .search__product__box .right__wrapper .product-bottom-details {
     background: #f4000b;
-    width: 105px;
+    width: 111px;
     border-radius: 6px;
 }
 

@@ -23,6 +23,7 @@ function loadPageContent(page) {
                 $($(this).siblings()[1]).fadeIn("slow").show();
                 $(this).siblings(".addmore__qty").css("opacity", "0");
                 $(this).siblings(".addmore__qty").css("display", "none");
+                emptySearch();
             }, 500);
         });
 
@@ -32,6 +33,7 @@ function loadPageContent(page) {
             $($(this).siblings()[1]).fadeIn("slow").hide();
             $(this).siblings(".addmore__qty").css("opacity", "1");
             $(this).siblings(".addmore__qty").css("display", "block");
+            emptySearch();
         });
 
         $('input').on('input', function () {
@@ -40,12 +42,6 @@ function loadPageContent(page) {
             return;
         });
     }
-
-    document.addEventListener('click', function (e) {
-        // e.preventDefault();
-        // e.stopPropagation();
-        emptySearch();
-    });
 
     $('#search_input').on("input", function (e) {
         e.preventDefault();
@@ -65,12 +61,14 @@ function loadPageContent(page) {
         addProducts(this)
     });
 
-    $('.counter__minus').click(function (e) {;
+    $('.counter__minus').click(function (e) {
         updateCounter(this, "minus");
+        emptySearch();
     });
 
-    $('.counter__plus').click(function (e) {;
+    $('.counter__plus').click(function (e) {
         updateCounter(this, "add");
+        emptySearch();
     });
 
     $('.item-drop').click(function (e) {
@@ -429,6 +427,8 @@ function searchProducts(node) {
     $(".product.searchproducts").remove();
     $('.close__icon__box').show();
     node.map((item) => {
+        let isdisabled = item.quantity_available ? false : true;
+        let btnName = isdisabled ? "Out of stock" : "ADD";
         $("#search_product_wrap").append(`
             <div class="product searchproducts">
                 <div class="left__wrapper">
@@ -436,25 +436,25 @@ function searchProducts(node) {
                     <div class="description">${item.description}</div>
                     <div class="price">Rs. ${item.price}</div>
                 </div>
-                <div class="right__wrapper">
-                    <div class="product-bottom-details" product="${encodeURIComponent(JSON.stringify(item))}">
-                        <div class="btn">ADD</div>
+                <div class="right__wrapper searchbox">
+                    <div isdisabled=${isdisabled} class="product-bottom-details" id="promotions-add-searchbox-${item.sku}" product="${encodeURIComponent(JSON.stringify(item))}">
+                        <div class="btn" isdisabled=${isdisabled}>${btnName}</div>
                     </div>
-                    <div class="counter__wrapper hide">
+                    <div class="counter__wrapper hide" id="promotions-counter-searchbox-${item.sku}">
                         <div class="counter__container checkout">
                             <div class="counter__box__container">
-                                <div class="counter__minus" id="minus" product="${encodeURIComponent(JSON.stringify(item))}">
+                                <div class="counter__minus search" id="minus" product="${encodeURIComponent(JSON.stringify(item))}">
                                     <img src="/assets/images/png/minus.png" />
                                 </div>
                             </div>
                         
-                            <input id="counter_input_${item.sku}" class="counter__input home" type="text" value="1" size="2" maxlength="2" autocomplete="off" previous-value="1" />
+                            <input id="counter_input_${item.sku}" class="counter__input search" type="text" value=${cartData[item.sku] ? cartData[item.sku].quantity : "1"} size="2" maxlength="2" autocomplete="off" previous-value="1" />
                             <div class="counter__box__container">
-                                <div class="counter__plus" id="plus" product="${encodeURIComponent(JSON.stringify(item))}">
+                                <div class="counter__plus search" id="plus" product="${encodeURIComponent(JSON.stringify(item))}">
                                     <img src="/assets/images/png/plus.png" />
                                 </div>
                             </div>
-                            <div class="addmore__qty">
+                            <div class="addmore__qty searchbox">
                                 <div class="submit" product="${encodeURIComponent(JSON.stringify(item))}">
                                     <img src="/assets/images/svg/icons8-ok.svg" />
                                 </div>
@@ -466,14 +466,10 @@ function searchProducts(node) {
         `);
     });
     if (node.length !== 0) {
-
-        /* for (let key in cartData) {
+        for (let key in cartData) {
             $(`#promotions-add-searchbox-${key}`).hide();
             $(`#promotions-counter-searchbox-${key}`).show();
-            $(`#counter_input_searchbox_${key}`).val(parseInt(cartData[key].quantity));
-            $(`#counter_input_searchbox_${key}`).change();
-            $(`#counter_input_searchbox_${key}`).attr("previous-value", parseInt(cartData[key].quantity) - 1 > 0 ? parseInt(cartData[key].quantity) - 1 : 0);
-        } */
+        }
 
         $('.product-bottom-details').click(function (e) {
             e.preventDefault();
@@ -481,16 +477,103 @@ function searchProducts(node) {
             addProducts(this)
         });
 
-        $('.counter__minus').click(function (e) {
+        $('.counter__minus.search').click(function (e) {
             e.preventDefault();
             e.stopPropagation();
             updateCounter(this, "minus");
+            let productData = $(this).attr("product");
+            let decodedProductData = JSON.parse(decodeURIComponent(productData));
+            if(cartData[decodedProductData.sku].quantity === 0) {
+                $(`#promotions-add-${decodedProductData.sku}`).show();
+                $(`#promotions-counter-${decodedProductData.sku}`).hide();
+                return;
+            } 
+            $(`#promotions-add-${decodedProductData.sku}`).hide();
+            let inputArr = [...document.querySelectorAll(`#counter_input_${decodedProductData.sku}`)];
+            inputArr.map(v => {
+                $(v).val(parseInt(cartData[decodedProductData.sku].quantity));
+                $(v).change();
+                // $(v).attr("previous-value", previousValue);
+            })
+            $(`#promotions-counter-${decodedProductData.sku}`).show();
         });
 
-        $('.counter__plus').click(function (e) {
+        $('.counter__plus.search').click(function (e) {
             e.preventDefault();
             e.stopPropagation();
             updateCounter(this, "add");
+            
+            let productData = $(this).attr("product");
+            let decodedProductData = JSON.parse(decodeURIComponent(productData));
+            $(`#promotions-add-${decodedProductData.sku}`).hide();
+            let inputArr = [...document.querySelectorAll(`#counter_input_${decodedProductData.sku}`)];
+            inputArr.map(v => {
+                $(v).val(parseInt(cartData[decodedProductData.sku].quantity));
+                $(v).change();
+                // $(v).attr("previous-value", previousValue);
+            })
+            $(`#promotions-counter-${decodedProductData.sku}`).show();
+        });
+
+        $('.counter__input.search').blur(function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            setTimeout(() => {
+                if (this.type === "search") return;
+                $($(this).siblings()[0]).fadeIn("slow").show();
+                $($(this).siblings()[1]).fadeIn("slow").show();
+                $(this).siblings(".addmore__qty").css("opacity", "0");
+                $(this).siblings(".addmore__qty").css("display", "none");
+            }, 500);
+        });
+
+        $('.counter__input.search').focus(function (e) {
+            if (this.type === "search") return;
+            $($(this).siblings()[0]).fadeIn("slow").hide();
+            $($(this).siblings()[1]).fadeIn("slow").hide();
+            $(this).siblings(".addmore__qty").css("opacity", "1");
+            $(this).siblings(".addmore__qty").css("display", "block");
+        });
+
+        $('.submit').click(function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            let counterInput = $(this).parent().siblings(".counter__input");
+            let currentValue = $(counterInput).val();
+            let previousValue = $(counterInput).attr("previous-value");
+            $(counterInput).val(parseInt(previousValue));
+            $(counterInput).change();
+            $($(this).parent().siblings()[0]).fadeIn("slow").show();
+            $($(this).parent().siblings()[2]).fadeIn("slow").show();
+            $(this).parent(".addmore__qty").css("opacity", "0");
+            $(this).parent(".addmore__qty").css("display", "none");
+    
+            if (currentValue != 0) {
+                let productData = $(this).attr("product");
+                let decodedProductData = JSON.parse(decodeURIComponent(productData));
+                delete cartData[decodedProductData.sku];
+                counterInput.val(0);
+                counterInput.change();
+                counterInput.attr("previous-value", 0);
+                let numberCircleCount = $("#numberCircle").attr("value");
+                let parseCount = Number(numberCircleCount)
+                let updatedValue = parseCount - previousValue;
+                $("#numberCircle").attr("value", updatedValue);
+                $("#numberCircle").text(updatedValue);
+                for (let i = 0; i < currentValue; i++) {
+                    updateCounter($($(counterInput).siblings()[1]).children()[0], "add");
+                }
+
+                $(`#promotions-add-${decodedProductData.sku}`).hide();
+                let inputArr = [...document.querySelectorAll(`#counter_input_${decodedProductData.sku}`)];
+                inputArr.map(v => {
+                    $(v).val(parseInt(cartData[decodedProductData.sku].quantity));
+                    $(v).change();
+                    $(v).attr("previous-value", previousValue);
+                })
+                $(`#promotions-counter-${decodedProductData.sku}`).show();
+                // $(`#counter_input_${decodedProductData.sku}`).attr("previous-value", parseInt(cartData[decodedProductData.sku].quantity) - 1 > 0 ? parseInt(cartData[decodedProductData.sku].quantity) - 1 : 0);
+            }
         });
     }
 }

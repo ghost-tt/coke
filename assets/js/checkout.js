@@ -128,7 +128,7 @@ function insertOrderCart(orderCart, skuid) {
         `)
     }
 
-    $('input').blur(function () {
+    $('.counter__input.checkout').blur(function () {
         setTimeout(() => {
             if(this.type === "search") return;
             $($(this).siblings()[0]).fadeIn("slow").show();
@@ -138,7 +138,7 @@ function insertOrderCart(orderCart, skuid) {
         }, 500);
     });
     
-    $('input').focus(function () {
+    $('.counter__input.checkout').focus(function () {
         if(this.type === "search") return;
         $($(this).siblings()[0]).fadeIn("slow").hide();
         $($(this).siblings()[1]).fadeIn("slow").hide();
@@ -177,7 +177,6 @@ function insertOrderCart(orderCart, skuid) {
             $("#numberCircle").text(updatedValue);
             for (let i = 0; i < currentValue; i++) {
                 updateCounterDataFromCheckout("add")
-                // updateCounter($($(counterInput).siblings()[1]).children()[0], "add");
             }
         }
     });
@@ -421,29 +420,29 @@ function processQ(data, skuid) {
     }, 4000);
 }
 
-function syncContainers(skuid) {
+/* function syncContainers(skuid) {
     for (let key in cartData) {
-        $(`#promotions-add-searchbox-${key}`).hide();
-        $(`#promotions-counter-searchbox-${key}`).show();
-        $(`#counter_input_searchbox_${key}`).val(parseInt(cartData[key].quantity));
-        $(`#counter_input_searchbox_${key}`).change();
-        $(`#counter_input_searchbox_${key}`).attr("previous-value", parseInt(cartData[key].quantity) - 1 > 0 ? parseInt(cartData[key].quantity) - 1 : 0);
+        // $(`#promotions-add-searchbox-${key}`).hide();
+        // $(`#promotions-counter-searchbox-${key}`).show();
+        // $(`#counter_input_searchbox_${key}`).val(parseInt(cartData[key].quantity));
+        // $(`#counter_input_searchbox_${key}`).change();
+        // $(`#counter_input_searchbox_${key}`).attr("previous-value", parseInt(cartData[key].quantity) - 1 > 0 ? parseInt(cartData[key].quantity) - 1 : 0);
 
-        $(`#promotions-add-${key}`).hide();
-        $(`#promotions-counter-${key}`).show();
-        $(`#counter_input_${key}`).val(parseInt(cartData[key].quantity));
-        $(`#counter_input_${key}`).change();
-        $(`#counter_input_${key}`).attr("previous-value", parseInt(cartData[key].quantity) - 1 > 0 ? parseInt(cartData[key].quantity) - 1 : 0);
+        // $(`#promotions-add-${key}`).hide();
+        // $(`#promotions-counter-${key}`).show();
+        // $(`#counter_input_${key}`).val(parseInt(cartData[key].quantity));
+        // $(`#counter_input_${key}`).change();
+        // $(`#counter_input_${key}`).attr("previous-value", parseInt(cartData[key].quantity) - 1 > 0 ? parseInt(cartData[key].quantity) - 1 : 0);
 
     }
     if (!cartData[skuid]) {
-        $(`#promotions-add-${skuid}`).show();
-        $(`#promotions-counter-${skuid}`).hide();
+        // $(`#promotions-add-${skuid}`).show();
+        // $(`#promotions-counter-${skuid}`).hide();
         // $(`#counter_input_${skuid}`).val(1);
         // $(`#counter_input_${skuid}`).change();
         // $(`#counter_input_${skuid}`).attr("previous-value", 1);
     }
-}
+} */
 
 function emptyContainerData() {
     $("#order_checkout_cart").empty();

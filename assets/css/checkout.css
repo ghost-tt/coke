@@ -274,6 +274,11 @@
     animation-name: slideToRightcheckout;
 }
 
+.counter__container .addmore__qty.searchbox { 
+    right: 18%;
+    animation-name: slideToRightcheckout;
+}
+
 @keyframes slideToRight {
     0%   {left: 45%;}
     25%  {left: 45%;}
