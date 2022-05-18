@@ -156,7 +156,7 @@ var config = {
                 },
                 {
                     "sku": "CCPPID8",
-                    "keywords": "",
+                    "keywords": "zero",
                     "name": "Coke zero",
                     "description": "7.5 fl oz, 10 pack",
                     "price": "14.95",
@@ -660,7 +660,7 @@ var getAllProducts = [
     },
     {
         "sku": "CCPPID8",
-        "keywords": "",
+        "keywords": "zero",
         "name": "Kinley 5 case offer",
         "description": "7.5 fl oz, 10 pack",
         "price": "14.95",
