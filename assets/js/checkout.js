@@ -50,7 +50,7 @@ function insertOrderCart(orderCart, skuid) {
                     </div>
                     <div class="product__counter">
                         <div class="icon__wrapper">
-                            <img src="/coke/assets/images/png/product.png" />
+                            <img src=${product.icon} />
                         </div>
 
                         <div class="counter__wrapper checkout">
@@ -97,7 +97,7 @@ function insertOrderCart(orderCart, skuid) {
                 </div>
                 <div class="product__counter">
                     <div class="icon__wrapper">
-                        <img src="/coke/assets/images/png/product.png" />
+                        <img src=${product.icon} />
                     </div>
 
                     <div class="counter__wrapper checkout" id="checkout-counter-${product.sku}">
