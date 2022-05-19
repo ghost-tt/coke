@@ -63,7 +63,8 @@ function loadPageContent(page, data) {
     $('.product-bottom-details').click(function (e) {
         e.preventDefault();
         e.stopPropagation();
-        addProducts(this)
+        addProducts(this);
+        emptySearch(this);
     });
 
     $('.counter__minus').click(function (e) {
@@ -490,7 +491,11 @@ function searchProducts(node) {
         $('.product-bottom-details').click(function (e) {
             e.preventDefault();
             e.stopPropagation();
-            addProducts(this)
+            addProducts(this);
+            let productData = $(this).attr("product");
+            let decodedProductData = JSON.parse(decodeURIComponent(productData));
+            $(`#promotions-add-${decodedProductData.sku}`).hide();
+            $(`#promotions-counter-${decodedProductData.sku}`).show();
         });
 
         $('.counter__minus.search').click(function (e) {
