@@ -62,15 +62,27 @@ window.addEventListener('message', function (eventData) {
         }
         if (parsedData?.event_code == 'custom-parenttoroot-checkout-event') {
             console.log("Checkout data ------- --- --- --- ------> ", parsedData);
-            document.getElementById('ymIframe').contentWindow.postMessage({
-                event_code: 'ym-client-event',
-                data: {
-                    event: {
-                     code: "applied_coupons",
-                     data: parsedData
+            setTimeout(() => {
+                document.getElementById('ymIframe').contentWindow.postMessage({
+                    event_code: 'ym-client-event',
+                    data: {
+                        event: {
+                         code: "applied_coupons",
+                         data: parsedData
+                        }
                     }
-                }
-           }, '*');
+               }, '*');
+            }, 5000);
+
+            //     document.getElementById('ymIframe').contentWindow.postMessage({
+            //         event_code: 'ym-client-event',
+            //         data: {
+            //             event: {
+            //              code: "applied_coupons",
+            //              data: parsedData
+            //             }
+            //         }
+            //    }, '*');
             return;
         }
 
