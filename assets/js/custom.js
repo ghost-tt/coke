@@ -867,23 +867,13 @@ function sortProducts(products, sortBy) {
     });
 }
 
-<<<<<<< HEAD
-function updateCheckoutCartData(data, type) {
-    // JAY
-=======
 function updateCheckoutCartData(data, type, bulkType) {
->>>>>>> upstream/sandbox-iframe-support
     if (Object.keys(cartData).length == 0) {
         cartData[data.sku] = {
             "product_data": data,
             "quantity": 1
         }
-<<<<<<< HEAD
-        // insertSelectedCoupon(config.checkout.discounts[0]);
-        processQ(cartData, data.sku);
-=======
         processQ(cartData, data.sku, bulkType);
->>>>>>> upstream/sandbox-iframe-support
         return;
     }
 
