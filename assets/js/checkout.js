@@ -176,9 +176,10 @@ function insertOrderCart(orderCart, skuid) {
             $("#numberCircle").attr("value", updatedValue);
             $("#numberCircle").text(updatedValue);
             for (let i = 0; i < currentValue; i++) {
-                updateCounterDataFromCheckout("add")
+                updateCounterDataFromCheckout("add", "bulk")
             }
         }
+        passDataToBot(cartData);
     });
 }
 
@@ -375,13 +376,16 @@ function hideDiscount() {
     recalculateCart(decodedDiscountData);
 } */
 
-function processQ(data, skuid) {
+function processQ(data, skuid, bulkType) {
     // syncContainers(skuid);
     if (Object.keys(data).length === 0) {
         emptyContainerData();
         return;
     }
     insertOrderCart(data, skuid);
+    if(bulkType == "bulk") {
+        return;
+    }
     passDataToBot(data);
     let cardRecalculatedData = recalculateCart();
     setTimeout(() => {
@@ -560,11 +564,11 @@ function recalculateCart() {
     return orderCartData;
 }
 
-function updateCounterDataFromCheckout(type) {
+function updateCounterDataFromCheckout(type, bulk) {
     let targetNode = $(event.target).parent();
     let selectedProduct = $(targetNode).attr("product")
     let decodedselectedProduct = JSON.parse(decodeURIComponent(selectedProduct));
-    updateCounter(targetNode, type, "checkout");
+    updateCounter(targetNode, type, "checkout", "bulk");
     let value = $(targetNode).parent().siblings(".counter__input").val();
     $(`#counter_input_${decodedselectedProduct.sku}`).val(value);
     $(`#counter_input_${decodedselectedProduct.sku}`).change();
