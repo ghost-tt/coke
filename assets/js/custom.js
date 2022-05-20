@@ -917,8 +917,6 @@ function updateProductsBasedOnProducts(node, type) {
         let updatedValue = parseCount + 1;
         $("#numberCircle").attr("value", updatedValue);
         $("#numberCircle").text(updatedValue);
-
-
     }
     if (type === "minus") {
         orderhistoryNode = $(node).siblings(".repeat.orderhistory");
