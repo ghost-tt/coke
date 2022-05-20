@@ -176,6 +176,12 @@
     pointer-events: none;
 }
 
+.product__counter .icon__wrapper img {
+    height: 5rem;
+    width: 100%;
+    object-fit: contain;
+}
+
 .name {
     font-weight: 700;
     font-size: 14px;
@@ -624,6 +630,9 @@
     .product__counter .icon__wrapper {
         height: 4rem;
         width: 6rem;
+    }
+    .product__counter .icon__wrapper img {
+        height: 4rem;
     }
     /* .counter__wrapper {
         width:fit-content;
