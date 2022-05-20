@@ -109,9 +109,10 @@ function loadPageContent(page, data) {
             $("#numberCircle").attr("value", updatedValue);
             $("#numberCircle").text(updatedValue);
             for (let i = 0; i < currentValue; i++) {
-                updateCounter($($(counterInput).siblings()[1]).children()[0], "add");
+                updateCounter($($(counterInput).siblings()[1]).children()[0], "add", "bulk");
             }
         }
+        passDataToBot(cartData);
     });
 }
 
@@ -582,7 +583,7 @@ function searchProducts(node) {
                 $("#numberCircle").attr("value", updatedValue);
                 $("#numberCircle").text(updatedValue);
                 for (let i = 0; i < currentValue; i++) {
-                    updateCounter($($(counterInput).siblings()[1]).children()[0], "add");
+                    updateCounter($($(counterInput).siblings()[1]).children()[0], "add", "bulk");
                 }
 
                 $(`#promotions-add-${decodedProductData.sku}`).hide();
@@ -593,6 +594,7 @@ function searchProducts(node) {
                     $(v).attr("previous-value", previousValue);
                 })
                 $(`#promotions-counter-${decodedProductData.sku}`).show();
+                passDataToBot(cartData);
                 // $(`#counter_input_${decodedProductData.sku}`).attr("previous-value", parseInt(cartData[decodedProductData.sku].quantity) - 1 > 0 ? parseInt(cartData[decodedProductData.sku].quantity) - 1 : 0);
             }
         });
@@ -679,7 +681,7 @@ function addProducts(quantityInput) {
 }
 
 
-function updateCounter(counterInput, type, requestFrom) {
+function updateCounter(counterInput, type, requestFrom, bulkType) {
     let siblingWrapper = $(counterInput).parent().siblings(".counter__input");
     if (type === "add") {
         var $input = $(siblingWrapper);
@@ -702,7 +704,7 @@ function updateCounter(counterInput, type, requestFrom) {
         let updatedValue = parseCount + 1;
         $("#numberCircle").attr("value", updatedValue);
         $("#numberCircle").text(updatedValue);
-        updateCheckoutCartData(decodedProductData, "add");
+        updateCheckoutCartData(decodedProductData, "add", bulkType);
         return false;
     }
 
@@ -737,7 +739,7 @@ function updateCounter(counterInput, type, requestFrom) {
                 $("#numberCircle").text(updatedValue);
             }
 
-            updateCheckoutCartData(decodedProductData, "minus");
+            updateCheckoutCartData(decodedProductData, "minus", bulkType);
             return false;
         }
         count = count < 1 ? 0 : count;
@@ -865,15 +867,23 @@ function sortProducts(products, sortBy) {
     });
 }
 
+<<<<<<< HEAD
 function updateCheckoutCartData(data, type) {
     // JAY
+=======
+function updateCheckoutCartData(data, type, bulkType) {
+>>>>>>> upstream/sandbox-iframe-support
     if (Object.keys(cartData).length == 0) {
         cartData[data.sku] = {
             "product_data": data,
             "quantity": 1
         }
+<<<<<<< HEAD
         // insertSelectedCoupon(config.checkout.discounts[0]);
         processQ(cartData, data.sku);
+=======
+        processQ(cartData, data.sku, bulkType);
+>>>>>>> upstream/sandbox-iframe-support
         return;
     }
 
@@ -903,7 +913,7 @@ function updateCheckoutCartData(data, type) {
         }
 
     }
-    processQ(cartData, data.sku);
+    processQ(cartData, data.sku, bulkType);
 }
 
 function updateProductsBasedOnProducts(node, type) {
