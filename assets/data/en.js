@@ -1,12 +1,7 @@
 window.addEventListener('message', function (eventData) {
-    console.log("Get the sent data ", eventData);
     const parsedEventData = JSON.parse(eventData.data)
-    console.log("received data from parent iframe ", parsedEventData);
     if (parsedEventData.event_code === "custom-child-client-event") {
-        console.log("\n\n\n\n\n\n\n HEYYYYYYYYYYYYYYYYYYY \n\n\n\n\n\n\n\n");
-        console.log(parsedEventData);
-
-        console.log("hitesh sir =-> ", document.getElementById('bodyContent'));
+        console.log("\n\n\n\n\n\n\n <---- parsed event data ---> \n\n\n\n\n\n\n\n", parsedEventData);
         var scriptTag = document.createElement('script');
         scriptTag.src = "/coke/assets/js/custom.js";
         scriptTag.type = "text/javascript";
@@ -18,46 +13,10 @@ window.addEventListener('message', function (eventData) {
     }
     
     if (parsedEventData.event_code === "custom-parentchild-client-checkout-event") {
-        console.log("\n\n\n\n\n\n\n discount data received \n\n\n\n\n\n\n\n");
-        console.log(parsedEventData);
-        let data = [
-            {
-                offerType: "rupee",
-                product_name: "",
-                quantity: "",
-                product_price: "",
-                discountedPrice:"",
-                discountPrice: "",
-                display_message: "test test test test",
-                offer_name:"TEST"
-            },
-            {
-                offerType: "percentage",
-                product_name: "",
-                quantity:"",
-                product_price:"",
-                discountedPrice: "",
-                discountedPercent:"",
-                display_message: "test test test",
-                offer_name:"TEST2"
-            },           
-            {
-                offerType: "product",
-                product_name: "*Free* " + "productName",
-                quantity: "",
-                product_price: "Rs.0",
-                unit_price: 0,
-                discountedPrice: 0,
-                display_message: "test test test",
-                offer_name:"TEST"
-            }
-        ]
         insertSelectedCoupon(parsedEventData.data, false, orderCartData);
     }
 
     if (parsedEventData.event_code === "custom-parentchild-client-recent-order-event") {
-        console.log("\n\n\n\n\n\n\n Recent Order data received \n\n\n\n\n\n\n\n");
-        console.log(parsedEventData);
         insertOrderHistoryProducts(parsedEventData.data)
     }
 });

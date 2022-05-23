@@ -207,7 +207,6 @@ function insertSelectedCoupon(discountData, type, data) {
     discountPrice = 0;
     $('#title_loader').empty();
     discountData.map((discount, index) => {
-        console.log('Here it comes ==+=> ', discount, index);
         discountPrice += discount.discountedPrice;
         let qty = discount.quantity > 0 ? `<span>${discount.quantity}</span>` : "";
         $(elementNode).append(`
@@ -238,7 +237,6 @@ function insertSelectedCoupon(discountData, type, data) {
         `)
     });
 
-    console.log('CHecking discount price', discountPrice, orderCartData);
     if (+discountPrice > 0) {
         showDiscountLable();
     } else {
@@ -610,7 +608,6 @@ function sendDataToBot() {
 }
 
 function passDataToBot(data) {
-    console.log("BEFORERERER +++++++++++", data);
     window.parent.postMessage(JSON.stringify({
         event_code: 'custom-checkout-event',
         data: data
@@ -618,14 +615,12 @@ function passDataToBot(data) {
 
     console.log("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n data ->>>>>>", data, "\n\n\n\n\n\n\n\n\n\n\n");
 
-    const values = Object.values(data);
+    /* const values = Object.values(data);
     const totalLength = values ? values.length : 0;
     const itemsWithNoQuantity = values.filter(obj => obj.quantity == 0);
     
-    console.log("Data to compare => ", values, itemsWithNoQuantity, totalLength)
     if (totalLength == itemsWithNoQuantity.length) {
         $('#item_total').text(0);
         $('#item_total').attr("orderValue", 0);
-    }
-    console.log("AFTER ++");
+    } */
 }

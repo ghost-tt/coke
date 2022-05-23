@@ -33,13 +33,10 @@ function loadPageContent(page, data) {
             $(this).siblings(".addmore__qty").css("display", "block");
             emptySearch();
         });
-        
-        console.log("12.213 => ", config.products);
-        
+
         for (let pObj of config.products) {
             getAllProducts.push(...pObj.items);
         }
-//         getAllProducts = config.products.map(p => p.item);
 
         $('input').on('input', function () {
             if (this.type === "search") return;
@@ -214,12 +211,9 @@ function insertPromotionsContainer() {
 }
 
 function insertOrderHistoryProducts(data) {
-    console.log("Inside == . ", data);
-    // console.log("INSide the insertOrderHistoryProducts fubc => ", config.recent_order, data);
     var titleEle = ".recent_order_title";
     $(titleEle).empty();
     $("#orderhistory_container").prepend(`<p class="products__title recent_order_title">${config.recent_order.title}</p>`)
-    // $("#orderhistory_container").prepend(`<p class="products__title recent_order_title">${config.recent_order.title}</p>`)
     var elementNode = "#orderhistory_container__inner";
     $(elementNode).empty();
     // JAY
@@ -367,7 +361,6 @@ function insertProducts(products, sortedBy) {
 }
 
 function insertInnerProducts(products) {
-    console.log("Hello there =? ", products);
     products.map((product, index) => {
         let listitem = "#products_container_inner" + index;
         product.items.map((item) => {
@@ -428,7 +421,6 @@ function debounce(func, timeout = 300) {
 function saveInput(node) {
     var filter = "keywords";
     var keyword = node.value;
-    console.log("Get ALL products", getAllProducts);
     var filteredData = getAllProducts.filter(function (obj) {
         if (obj[filter] != "") {
             return obj[filter].includes(keyword);
