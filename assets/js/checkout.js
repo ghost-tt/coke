@@ -435,7 +435,7 @@ function processQ(data, skuid, bulkType) {
     }
     insertOrderCart(data, skuid);
     console.log("\n\n\n\n bulkType ---> \n\n\n\n ", bulkType);
-    
+
     if(bulkType == "bulk") {
         return;
     }
@@ -595,7 +595,7 @@ function updateCounterDataFromCheckout(type, bulk) {
     let targetNode = $(event.target).parent();
     let selectedProduct = $(targetNode).attr("product")
     let decodedselectedProduct = JSON.parse(decodeURIComponent(selectedProduct));
-    updateCounter(targetNode, type, "checkout", "bulk");
+    updateCounter(targetNode, type, "checkout", bulk);
     let value = $(targetNode).parent().siblings(".counter__input").val();
     $(`#counter_input_${decodedselectedProduct.sku}`).val(value);
     $(`#counter_input_${decodedselectedProduct.sku}`).change();

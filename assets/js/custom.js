@@ -106,7 +106,7 @@ function loadPageContent(page, data) {
             $("#numberCircle").attr("value", updatedValue);
             $("#numberCircle").text(updatedValue);
             for (let i = 0; i < currentValue; i++) {
-                updateCounter($($(counterInput).siblings()[1]).children()[0], "add", "bulk");
+                updateCounter($($(counterInput).siblings()[1]).children()[0], "add", "", "bulk");
             }
             passDataToBot(cartData, "bulk");
         }
@@ -528,7 +528,7 @@ function searchProducts(node) {
                 $("#numberCircle").attr("value", updatedValue);
                 $("#numberCircle").text(updatedValue);
                 for (let i = 0; i < currentValue; i++) {
-                    updateCounter($($(counterInput).siblings()[1]).children()[0], "add", "bulk");
+                    updateCounter($($(counterInput).siblings()[1]).children()[0], "add", "", "bulk");
                 }
 
                 $(`#promotions-add-${decodedProductData.sku}`).hide();
