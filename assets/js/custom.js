@@ -106,10 +106,10 @@ function loadPageContent(page, data) {
             $("#numberCircle").attr("value", updatedValue);
             $("#numberCircle").text(updatedValue);
             for (let i = 0; i < currentValue; i++) {
-                updateCounter($($(counterInput).siblings()[1]).children()[0], "add", "bulk");
+                updateCounter($($(counterInput).siblings()[1]).children()[0], "add", "", "bulk");
             }
+            passDataToBot(cartData, "bulk");
         }
-        passDataToBot(cartData);
     });
 }
 
@@ -270,53 +270,6 @@ function insertOrderHistoryProducts(data) {
     });
 }
 
-function insertFavouriteProducts() {
-    config.favourites.items.map((item) => {
-        let isdisabled = item.quantity_available ? false : true;
-        let btnName = isdisabled ? "Out of stock" : "ADD";
-        $("#favourites__container").append(`
-            <div class="product-card">
-                <div class="product-tumb favourite">
-                    <div class="innerbox favourite">
-                        <embed src=${item.icon} />
-                    </div>
-                </div>
-                <div class="product__details inner">
-                    <div class="product__text__wrapper">
-                        <p class="product__name">${item.name}</p>
-                        <p class="product__quantity">${item.description}</p>
-                        <p class="product__price">Rs. ${item.price}</p>
-                    </div>
-                    <div isdisabled=${isdisabled} class="product-bottom-details" product="${encodeURIComponent(JSON.stringify(item))}">
-                        <div class="btn" isdisabled=${isdisabled}>${btnName}</div>
-                    </div>
-                    <div class="counter__wrapper hide">
-                        <div class="counter__container">
-                            <div class="counter__box__container">
-                                <div class="counter__minus" id="minus" product="${encodeURIComponent(JSON.stringify(item))}">
-                                    <img src="/coke/assets/images/png/minus.png" />
-                                </div>
-                            </div>
-                        
-                            <input id="counter_input_${item.sku}" class="counter__input home" type="text" value="1" size="2" maxlength="2" autocomplete="off" previous-value="1" />
-                            <div class="counter__box__container" product="${encodeURIComponent(JSON.stringify(item))}">
-                                <div class="counter__plus" id="plus">
-                                    <img src="/coke/assets/images/png/plus.png" />
-                                </div>
-                            </div>
-                            <div class="addmore__qty">
-                                <div class="submit" product="${encodeURIComponent(JSON.stringify(item))}">
-                                    <img src="/coke/assets/images/svg/icons8-ok.svg" />
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        `);
-    });
-}
-
 function insertFilterBar() {
     if (!($("#product_header_bar").is(":visible"))) {
         $("#product_header_bar").css('display', 'flex');
@@ -465,7 +418,7 @@ function searchProducts(node) {
                                 </div>
                             </div>
                             <div class="addmore__qty searchbox">
-                                <div class="submit" product="${encodeURIComponent(JSON.stringify(item))}">
+                                <div class="submit search" product="${encodeURIComponent(JSON.stringify(item))}">
                                     <img src="/coke/assets/images/svg/icons8-ok.svg" />
                                 </div>
                             </div>
@@ -549,7 +502,7 @@ function searchProducts(node) {
             $(this).siblings(".addmore__qty").css("display", "block");
         });
 
-        $('.submit').click(function (e) {
+        $('.submit.search').click(function (e) {
             e.preventDefault();
             e.stopPropagation();
             let counterInput = $(this).parent().siblings(".counter__input");
@@ -575,7 +528,7 @@ function searchProducts(node) {
                 $("#numberCircle").attr("value", updatedValue);
                 $("#numberCircle").text(updatedValue);
                 for (let i = 0; i < currentValue; i++) {
-                    updateCounter($($(counterInput).siblings()[1]).children()[0], "add", "bulk");
+                    updateCounter($($(counterInput).siblings()[1]).children()[0], "add", "", "bulk");
                 }
 
                 $(`#promotions-add-${decodedProductData.sku}`).hide();
@@ -586,7 +539,7 @@ function searchProducts(node) {
                     $(v).attr("previous-value", previousValue);
                 })
                 $(`#promotions-counter-${decodedProductData.sku}`).show();
-                passDataToBot(cartData);
+                passDataToBot(cartData, "bulk");
                 // $(`#counter_input_${decodedProductData.sku}`).attr("previous-value", parseInt(cartData[decodedProductData.sku].quantity) - 1 > 0 ? parseInt(cartData[decodedProductData.sku].quantity) - 1 : 0);
             }
         });

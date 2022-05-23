@@ -72,7 +72,7 @@ function insertOrderCart(orderCart, skuid) {
                                     </div>
                                 </div>
                                 <div class="addmore__qty checkout">
-                                    <div class="submit" product="${encodeURIComponent(JSON.stringify(product))}">
+                                    <div class="submit checkout" product="${encodeURIComponent(JSON.stringify(product))}">
                                         <img src="/coke/assets/images/svg/icons8-ok.svg" />
                                     </div>
                                 </div>
@@ -124,7 +124,7 @@ function insertOrderCart(orderCart, skuid) {
                                 </div>
                             </div>
                             <div class="addmore__qty checkout">
-                                <div class="submit" product="${encodeURIComponent(JSON.stringify(product))}">
+                                <div class="submit checkout" product="${encodeURIComponent(JSON.stringify(product))}">
                                     <img src="/coke/assets/images/svg/icons8-ok.svg" />
                                 </div>
                             </div>
@@ -159,7 +159,7 @@ function insertOrderCart(orderCart, skuid) {
         return;
     });
 
-    $('.submit').click(function () {
+    $('.submit.checkout').click(function () {
         let counterInput = $(this).parent().siblings(".counter__input");
         let currentValue = $(counterInput).val();
         let previousValue = $(counterInput).attr("previous-value");
@@ -185,8 +185,8 @@ function insertOrderCart(orderCart, skuid) {
             for (let i = 0; i < currentValue; i++) {
                 updateCounterDataFromCheckout("add", "bulk")
             }
+            passDataToBot(cartData, "bulk");
         }
-        passDataToBot(cartData);
     });
 }
 
@@ -428,16 +428,15 @@ function hideDiscount() {
 } */
 
 function processQ(data, skuid, bulkType) {
-    // syncContainers(skuid);
     if (Object.keys(data).length === 0) {
         emptyContainerData();
         return;
     }
     insertOrderCart(data, skuid);
-    if(bulkType == "bulk") {
-        return;
+
+    if(!bulkType) {
+        passDataToBot(data, bulkType);
     }
-    passDataToBot(data);
     recalculateCart();
 }
 
@@ -593,7 +592,7 @@ function updateCounterDataFromCheckout(type, bulk) {
     let targetNode = $(event.target).parent();
     let selectedProduct = $(targetNode).attr("product")
     let decodedselectedProduct = JSON.parse(decodeURIComponent(selectedProduct));
-    updateCounter(targetNode, type, "checkout", "bulk");
+    updateCounter(targetNode, type, "checkout", bulk);
     let value = $(targetNode).parent().siblings(".counter__input").val();
     $(`#counter_input_${decodedselectedProduct.sku}`).val(value);
     $(`#counter_input_${decodedselectedProduct.sku}`).change();
@@ -607,13 +606,13 @@ function sendDataToBot() {
     }), '*');
 }
 
-function passDataToBot(data) {
+function passDataToBot(data, bulkType) {
     window.parent.postMessage(JSON.stringify({
         event_code: 'custom-checkout-event',
         data: data
     }), '*');
 
-    console.log("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n data ->>>>>>", data, "\n\n\n\n\n\n\n\n\n\n\n");
+    console.log("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n data ->>>>>>", data, "\n\n\n\n\n\n\n\n\n\n\n", bulkType);
 
     /* const values = Object.values(data);
     const totalLength = values ? values.length : 0;
