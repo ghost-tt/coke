@@ -434,6 +434,8 @@ function processQ(data, skuid, bulkType) {
         return;
     }
     insertOrderCart(data, skuid);
+    console.log("\n\n\n\n bulkType ---> \n\n\n\n ", bulkType);
+    
     if(bulkType == "bulk") {
         return;
     }
