@@ -437,7 +437,7 @@ function processQ(data, skuid, bulkType) {
     if(bulkType == "bulk") {
         return;
     }
-    passDataToBot(data);
+    passDataToBot(data, "bulk");
     recalculateCart();
 }
 
