@@ -616,6 +616,8 @@ function passDataToBot(data) {
         data: data
     }), '*');
 
+    console.log("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n data ->>>>>>", data, "\n\n\n\n\n\n\n\n\n\n\n");
+
     const values = Object.values(data);
     const totalLength = values ? values.length : 0;
     const itemsWithNoQuantity = values.filter(obj => obj.quantity == 0);
