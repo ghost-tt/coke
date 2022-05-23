@@ -185,8 +185,8 @@ function insertOrderCart(orderCart, skuid) {
             for (let i = 0; i < currentValue; i++) {
                 updateCounterDataFromCheckout("add", "bulk")
             }
+            passDataToBot(cartData, "bulk");
         }
-        passDataToBot(cartData);
     });
 }
 
@@ -607,13 +607,13 @@ function sendDataToBot() {
     }), '*');
 }
 
-function passDataToBot(data) {
+function passDataToBot(data, bulkType) {
     window.parent.postMessage(JSON.stringify({
         event_code: 'custom-checkout-event',
         data: data
     }), '*');
 
-    console.log("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n data ->>>>>>", data, "\n\n\n\n\n\n\n\n\n\n\n");
+    console.log("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n data ->>>>>>", data, "\n\n\n\n\n\n\n\n\n\n\n", bulkType);
 
     /* const values = Object.values(data);
     const totalLength = values ? values.length : 0;
