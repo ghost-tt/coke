@@ -428,18 +428,15 @@ function hideDiscount() {
 } */
 
 function processQ(data, skuid, bulkType) {
-    // syncContainers(skuid);
     if (Object.keys(data).length === 0) {
         emptyContainerData();
         return;
     }
     insertOrderCart(data, skuid);
-    console.log("\n\n\n\n bulkType ---> \n\n\n\n ", bulkType);
 
-    if(bulkType == "bulk") {
-        return;
+    if(!bulkType) {
+        passDataToBot(data, bulkType);
     }
-    passDataToBot(data, "bulk");
     recalculateCart();
 }
 
