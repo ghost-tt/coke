@@ -465,7 +465,7 @@ function searchProducts(node) {
                                 </div>
                             </div>
                             <div class="addmore__qty searchbox">
-                                <div class="submit" product="${encodeURIComponent(JSON.stringify(item))}">
+                                <div class="submit search" product="${encodeURIComponent(JSON.stringify(item))}">
                                     <img src="/coke/assets/images/svg/icons8-ok.svg" />
                                 </div>
                             </div>
@@ -549,7 +549,7 @@ function searchProducts(node) {
             $(this).siblings(".addmore__qty").css("display", "block");
         });
 
-        $('.submit').click(function (e) {
+        $('.submit.search').click(function (e) {
             e.preventDefault();
             e.stopPropagation();
             let counterInput = $(this).parent().siblings(".counter__input");

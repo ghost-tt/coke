@@ -72,7 +72,7 @@ function insertOrderCart(orderCart, skuid) {
                                     </div>
                                 </div>
                                 <div class="addmore__qty checkout">
-                                    <div class="submit" product="${encodeURIComponent(JSON.stringify(product))}">
+                                    <div class="submit checkout" product="${encodeURIComponent(JSON.stringify(product))}">
                                         <img src="/coke/assets/images/svg/icons8-ok.svg" />
                                     </div>
                                 </div>
@@ -124,7 +124,7 @@ function insertOrderCart(orderCart, skuid) {
                                 </div>
                             </div>
                             <div class="addmore__qty checkout">
-                                <div class="submit" product="${encodeURIComponent(JSON.stringify(product))}">
+                                <div class="submit checkout" product="${encodeURIComponent(JSON.stringify(product))}">
                                     <img src="/coke/assets/images/svg/icons8-ok.svg" />
                                 </div>
                             </div>
@@ -159,7 +159,7 @@ function insertOrderCart(orderCart, skuid) {
         return;
     });
 
-    $('.submit').click(function () {
+    $('.submit.checkout').click(function () {
         let counterInput = $(this).parent().siblings(".counter__input");
         let currentValue = $(counterInput).val();
         let previousValue = $(counterInput).attr("previous-value");
