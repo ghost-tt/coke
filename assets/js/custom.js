@@ -558,7 +558,6 @@ function emptySearch(node) {
 }
 
 function switchTabs(id) {
-    event.preventDefault();
     let siblings = $(event.target).siblings();
     let parsedSiblings = [...siblings]
     parsedSiblings.forEach(ele => {
