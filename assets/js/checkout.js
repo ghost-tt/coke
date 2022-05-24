@@ -520,7 +520,7 @@ function recalculateOrderSummary(data) {
         $('#discout_perc').text(discount.toFixed(2));
         $('#discout_perc').attr("orderValue", discount.toFixed(2));
 
-        $('#grand_total').text(total.toFixed(2));
+        $('#grand_total').text(numberWithCommas(total.toFixed(2)));
         $('#grand_total').attr("orderValue", total.toFixed(2));
 
         $('.item').fadeIn(300);
