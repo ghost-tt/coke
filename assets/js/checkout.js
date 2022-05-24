@@ -138,6 +138,7 @@ function insertOrderCart(orderCart, skuid) {
     $('.counter__input.checkout').blur(function () {
         setTimeout(() => {
             if(this.type === "search") return;
+            $(this).val($(this).attr("previous-value"));
             $($(this).siblings()[0]).fadeIn("slow").show();
             $($(this).siblings()[1]).fadeIn("slow").show();
             $(this).siblings(".addmore__qty").css("opacity", "0");
