@@ -381,7 +381,7 @@ function saveInput(node) {
     var keyword = node.value;
     var filteredData = getAllProducts.filter(function (obj) {
         if (obj[filter] != "") {
-            return obj[filter].includes(keyword);
+            return obj[filter].includes(keyword.toLowerCase());
         }
     });
     searchProducts(filteredData)
