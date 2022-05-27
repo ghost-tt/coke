@@ -124,7 +124,8 @@ window.addEventListener('message', function (eventData) {
     },
     "products": [
         {
-            "icon": "/assets/images/svg/coke_product.svg",
+            "vicon": "/assets/images/svg/coke_product.svg",
+            "bicon": "/assets/images/svg/coke_product.svg",
             "volume_name": "2 Ltr",
             "volume": 2,
             "brand": "coke",
