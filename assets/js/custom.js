@@ -240,7 +240,7 @@ function insertOrderHistoryProducts(data) {
                     </div>
                     <div class="product__counter">
                         <div class="icon__wrapper">
-                            <img src="/coke/assets/images/png/product.png" />
+                            <img src="https://cdn.yellowmessenger.com/lz1hLoQ0Vqo91653626367953.svg"/>
                         </div>
                         <div class="repeat orderhistory" id="product-bottom-details" product="${encodeURIComponent(JSON.stringify(product))}">
                             <div class="btn">REPEAT</div>
