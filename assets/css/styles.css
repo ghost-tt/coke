@@ -618,27 +618,27 @@ input[type="checkbox"] {
     position: relative;
 }
 
-/* .faq-drawer .product__bar__icon {
+.faq-drawer .product__bar__icon {
     width: 24px;
     height: 68.6px;
     position: absolute;
     left: 14px;
     bottom: 5.5px;
-} */
+}
 
-.faq-drawer .product__bar__icon {
+/* .faq-drawer .product__bar__icon {
     width: 67px;
     height: 59.6px;
     position: absolute;
     left: 7px;
     bottom: 0.5px;
 }
-
+ */
 .faq-drawer__title {
     display: block;
     position: relative;
-    /* padding: 22px 24px 22px 67px; */
-    padding: 22px 24px 22px 88px;
+    padding: 22px 24px 22px 67px;
+    /* padding: 22px 24px 22px 88px; */
     margin-bottom: 0;
     background: white;
     border-radius: 8px;
