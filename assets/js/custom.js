@@ -287,7 +287,9 @@ function insertFilterBar() {
 
 function insertProducts(products, sortedBy) {
     let iconValue = sortedBy === "volume_name" ? "icon" : "bybrandsIcons";
+    console.log("icon value --> ", iconValue);
     products.map((product, index) => {
+        console.log("icon inner ", product[iconValue]);
         $("#product_item_container").append(`
             <div class="faq-drawer">
                 <input class="faq-drawer__trigger" id=${"faq-drawer" + "-" + index} type="checkbox" autocomplete="off"/>
