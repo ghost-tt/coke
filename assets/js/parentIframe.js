@@ -43,7 +43,7 @@ window.addEventListener('message', function (eventData) {
 
         if (parsedData?.event_code == 'custom-parenttoroot-client-event' && parsedData?.data) {
             console.log("\n\n\n <--- Applied coupons received in parent iframe ---> \n\n\n", parsedData);
-            document.getElementById('ymIframe').contentWindow.postMessage({
+            document.getElementById('ymIframe').contentWindow.postMessage(JSON.stringify({
                 event_code: 'ym-client-event',
                 data: {
                     event: {
@@ -51,14 +51,14 @@ window.addEventListener('message', function (eventData) {
                      data: parsedData
                     }
                 }
-           }, '*');
+           }), '*');
             window.location.href= 'https://wa.me/+94773233440?text=continue';
             return;
         }
         if (parsedData?.event_code == 'custom-parenttoroot-checkout-event') {
             console.log("\n\n\n <--- Checkout event received in parent iframe ---> \n\n\n", parsedData);
 
-            document.getElementById('ymIframe').contentWindow.postMessage({
+            document.getElementById('ymIframe').contentWindow.postMessage(JSON.stringify({
                 event_code: 'ym-client-event',
                 data: {
                     event: {
@@ -66,13 +66,13 @@ window.addEventListener('message', function (eventData) {
                      data: parsedData
                     }
                 }
-            }, '*');
+            }), '*');
             return;
         }
 
         if (parsedData?.event_code == 'custom-parenttoroot-recent-order-event') {
             console.log("\n\n\n <--- Fetch recent orders received in parent iframe ---> \n\n\n", parsedData);
-            document.getElementById('ymIframe').contentWindow.postMessage({
+            document.getElementById('ymIframe').contentWindow.postMessage(JSON.stringify({
                 event_code: 'ym-client-event',
                 data: {
                     event: {
@@ -80,7 +80,7 @@ window.addEventListener('message', function (eventData) {
                      data: parsedData
                     }
                 }
-           }, '*');
+           }), '*');
             return;
         }
     } catch (error) {
