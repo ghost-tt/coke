@@ -71,7 +71,8 @@
 
             function yourFunction() {
                 alert("Session time out!!!");
-                window.location.reload();
+                let prevURL = window.location.href;
+                window.location.href = prevURL;
             }
 
             function resetTimer() {
