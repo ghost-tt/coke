@@ -55,6 +55,7 @@ window.addEventListener('message', function (eventData) {
             window.location.href= 'https://wa.me/+94773233440?text=continue';
             return;
         }
+
         if (parsedData?.event_code == 'custom-parenttoroot-checkout-event') {
             console.log("\n\n\n <--- Checkout event received in parent iframe ---> \n\n\n", parsedData);
 
@@ -66,7 +67,7 @@ window.addEventListener('message', function (eventData) {
                      data: parsedData
                     }
                 }
-            }), '*');
+            }), 'https://app.yellowmessenger.com');
             return;
         }
 
@@ -81,6 +82,12 @@ window.addEventListener('message', function (eventData) {
                     }
                 }
            }), '*');
+            return;
+        }
+
+        if (parsedData?.event_code == 'session-timedout-webapp-childframe') {
+            console.log("\n\n\n <--- Session Timed out parent frame ---> \n\n\n");
+            this.window.location.reload();
             return;
         }
     } catch (error) {

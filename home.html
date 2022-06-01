@@ -71,6 +71,9 @@
 
             function yourFunction() {
                 alert("Session time out!!!");
+                window.parent.postMessage(JSON.stringify({
+                    event_code: 'session-timedout-webapp',
+                }), '*');
             }
 
             function resetTimer() {
