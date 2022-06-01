@@ -41,4 +41,10 @@ window.addEventListener('message', function (eventData) {
             data: parsedEventData.data
         }), '*');
     }
+
+    if(parsedEventData.event_code === "session-timedout-webapp") {
+        parent.postMessage(JSON.stringify({
+            event_code: 'session-timedout-webapp-childframe',
+        }), '*');
+    }
 });
