@@ -58,7 +58,8 @@ function loadPageContent(page, data) {
         emptySearch(this);
     });
 
-    $('.product-bottom-details').click(function (e) {
+    // TEMPORARY COMMENT
+    /* $('.product-bottom-details').click(function (e) {
         e.preventDefault();
         e.stopPropagation();
         addProducts(this);
@@ -73,7 +74,7 @@ function loadPageContent(page, data) {
     $('.counter__plus').click(function (e) {
         updateCounter(this, "add");
         emptySearch();
-    });
+    }); */
 
     $('.item-drop').click(function (e) {
         // e.preventDefault();
@@ -318,6 +319,24 @@ function insertProducts(products, sortedBy) {
             $($(this).siblings(".faq-drawer__content-wrapper")).css("max-height", drawerContentBoxHeight + 32);
             $(this).siblings(".faq-drawer__content-wrapper").addClass("ashish");
         }
+    });
+
+    // listeners added
+    $('.product-bottom-details').click(function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        addProducts(this);
+        emptySearch(this);
+    });
+
+    $('.counter__minus').click(function (e) {
+        updateCounter(this, "minus");
+        emptySearch();
+    });
+
+    $('.counter__plus').click(function (e) {
+        updateCounter(this, "add");
+        emptySearch();
     });
 }
 
