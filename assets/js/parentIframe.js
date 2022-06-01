@@ -56,7 +56,8 @@ window.addEventListener('message', function (eventData) {
             return;
         }
 
-        if (parsedData?.event_code == 'custom-parenttoroot-checkout-event') {
+     try {
+            if (parsedData?.event_code == 'custom-parenttoroot-checkout-event') {
             console.log("\n\n\n <--- Checkout event received in parent iframe ---> \n\n\n", parsedData);
 
             document.getElementById('ymIframe').contentWindow.postMessage(JSON.stringify({
@@ -70,6 +71,9 @@ window.addEventListener('message', function (eventData) {
             }), '*');
             return;
         }
+     }catch(e) {
+        console.log(e, 'Error in applied coupons Events')
+     }
 
         if (parsedData?.event_code == 'custom-parenttoroot-recent-order-event') {
             console.log("\n\n\n <--- Fetch recent orders received in parent iframe ---> \n\n\n", parsedData);
