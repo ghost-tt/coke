@@ -63,16 +63,21 @@ window.addEventListener('message', function (eventData) {
      try {
             if (parsedData?.event_code == 'custom-parenttoroot-checkout-event') {
             console.log("\n\n\n <--- Checkout event received in parent iframe ---> \n\n\n", parsedData);
-
-            ymIfrmae.contentWindow.postMessage(JSON.stringify({
-                event_code: 'ym-client-event',
-                data: {
-                    event: {
-                     code: "applied_coupons",
-                     data: parsedData
-                    }
+               window.chat.send({
+                event: {
+                 code: "applied_coupons",
+                 data: parsedData
                 }
-            }), '*');
+            }, true);
+//             ymIfrmae.contentWindow.postMessage(JSON.stringify({
+//                 event_code: 'ym-client-event',
+//                 data: {
+//                     event: {
+//                      code: "applied_coupons",
+//                      data: parsedData
+//                     }
+//                 }
+//             }), '*');
             console.log('send applied coupons Event Successfully')
             return;
         }
