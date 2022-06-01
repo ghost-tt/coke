@@ -2,6 +2,7 @@ var config = {};
 
 function loadPageContent(page, data) {
     config = data;
+    console.log("Init web app");
     if (page === "homepage") {
         insertSearchBar();
         insertTabContainer();
