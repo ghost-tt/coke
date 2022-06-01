@@ -55,12 +55,16 @@ window.addEventListener('message', function (eventData) {
             window.location.href= 'https://wa.me/+94773233440?text=continue';
             return;
         }
+        
+        
+    const ymIfrmae = document.getElementById('ymIframe');
+        
 
      try {
             if (parsedData?.event_code == 'custom-parenttoroot-checkout-event') {
             console.log("\n\n\n <--- Checkout event received in parent iframe ---> \n\n\n", parsedData);
 
-            document.getElementById('ymIframe').contentWindow.postMessage(JSON.stringify({
+            ymIfrmae.contentWindow.postMessage(JSON.stringify({
                 event_code: 'ym-client-event',
                 data: {
                     event: {
@@ -69,6 +73,7 @@ window.addEventListener('message', function (eventData) {
                     }
                 }
             }), '*');
+            console.log('send applied coupons Event Successfully')
             return;
         }
      }catch(e) {
