@@ -2,7 +2,6 @@ var config = {};
 
 function loadPageContent(page, data) {
     config = data;
-    console.log("Init web app");
     if (page === "homepage") {
         insertSearchBar();
         insertTabContainer();
@@ -59,19 +58,19 @@ function loadPageContent(page, data) {
         emptySearch(this);
     });
 
-    $('.product-bottom-details.promotions').click(function (e) {
+    $('.product-bottom-details').click(function (e) {
         e.preventDefault();
         e.stopPropagation();
         addProducts(this);
         emptySearch(this);
     });
 
-    $('.counter__minus.promotions').click(function (e) {
+    $('.counter__minus').click(function (e) {
         updateCounter(this, "minus");
         emptySearch();
     });
 
-    $('.counter__plus.promotions').click(function (e) {
+    $('.counter__plus').click(function (e) {
         updateCounter(this, "add");
         emptySearch();
     });
@@ -165,20 +164,20 @@ function insertPromotionsContainer() {
                         <div class="readless hide">read less</div>
                         <p class="product__price">Rs. ${numberWithCommas(promotion.price)}</p>
                     </div>
-                    <div isdisabled=${isdisabled} class="product-bottom-details promotions" id="promotions-add-${promotion.sku}" product="${encodeURIComponent(JSON.stringify(promotion))}">
+                    <div isdisabled=${isdisabled} class="product-bottom-details" id="promotions-add-${promotion.sku}" product="${encodeURIComponent(JSON.stringify(promotion))}">
                         <div class="btn" isdisabled=${isdisabled}>${btnName}</div>
                     </div>
                     <div class="counter__wrapper hide" id="promotions-counter-${promotion.sku}">
                         <div class="counter__container">
                             <div class="counter__box__container">
-                                <div class="counter__minus promotions" id="minus" product="${encodeURIComponent(JSON.stringify(promotion))}">
+                                <div class="counter__minus" id="minus" product="${encodeURIComponent(JSON.stringify(promotion))}">
                                     <img src="/coke/assets/images/png/minus.png" />
                                 </div>
                             </div>
                         
                             <input id="counter_input_${promotion.sku}" class="counter__input home" type="text" value="1" size="2" maxlength="2" autocomplete="off" previous-value="1" />
                             <div class="counter__box__container">
-                                <div class="counter__plus promotions" id="plus" product="${encodeURIComponent(JSON.stringify(promotion))}">
+                                <div class="counter__plus" id="plus" product="${encodeURIComponent(JSON.stringify(promotion))}">
                                     <img src="/coke/assets/images/png/plus.png" />
                                 </div>
                             </div>
@@ -320,24 +319,6 @@ function insertProducts(products, sortedBy) {
             $(this).siblings(".faq-drawer__content-wrapper").addClass("ashish");
         }
     });
-
-    // listeners added
-    $('.product-bottom-details.innerproducts').click(function (e) {
-        e.preventDefault();
-        e.stopPropagation();
-        addProducts(this);
-        emptySearch(this);
-    });
-
-    $('.counter__minus.innerproducts').click(function (e) {
-        updateCounter(this, "minus");
-        emptySearch();
-    });
-
-    $('.counter__plus.innerproducts').click(function (e) {
-        updateCounter(this, "add");
-        emptySearch();
-    });
 }
 
 function insertInnerProducts(products) {
@@ -359,20 +340,20 @@ function insertInnerProducts(products) {
                             <p class="product__quantity">${item.description}</p>
                             <p class="product__price">Rs. ${numberWithCommas(item.price)}</p>
                         </div>
-                        <div isdisabled=${isdisabled} class="product-bottom-details innerproducts" id="promotions-add-${item.sku}" product="${encodeURIComponent(JSON.stringify(item))}">
+                        <div isdisabled=${isdisabled} class="product-bottom-details" id="promotions-add-${item.sku}" product="${encodeURIComponent(JSON.stringify(item))}">
                             <div class="btn inner" isdisabled=${isdisabled}>${btnName}</div>
                         </div>
                         <div class="counter__wrapper hide" id="promotions-counter-${item.sku}">
                             <div class="counter__container">
                                 <div class="counter__box__container">
-                                    <div class="counter__minus innerproducts" id="minus" product="${encodeURIComponent(JSON.stringify(item))}">
+                                    <div class="counter__minus" id="minus" product="${encodeURIComponent(JSON.stringify(item))}">
                                         <img src="/coke/assets/images/png/minus.png"/>
                                     </div>
                                 </div>
                             
                                 <input id="counter_input_${item.sku}" class="counter__input home" type="text" value="1" size="2" maxlength="2" autocomplete="off" previous-value="1" />
                                 <div class="counter__box__container">
-                                    <div class="counter__plus innerproducts" id="plus" product="${encodeURIComponent(JSON.stringify(item))}">
+                                    <div class="counter__plus" id="plus" product="${encodeURIComponent(JSON.stringify(item))}">
                                         <img src="/coke/assets/images/png/plus.png" />
                                     </div>
                                 </div>
