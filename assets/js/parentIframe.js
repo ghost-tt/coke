@@ -64,7 +64,7 @@ window.addEventListener('message', function (eventData) {
                     time: utc
                 }
             }, true);
-            app.log(utc, 'Event Timming-----')
+            console.log(utc, 'Event Timming-----')
             return;
         }
         
