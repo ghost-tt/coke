@@ -43,12 +43,12 @@ window.addEventListener('message', function (eventData) {
 
         if (parsedData?.event_code == 'custom-parenttoroot-client-event' && parsedData?.data) {
             console.log("\n\n\n <--- Applied coupons received in parent iframe ---> \n\n\n", parsedData);
-            window.frames.ymIframe.chat.send(JSON.stringify({
+            window.frames.ymIframe.chat.send({
                 event: {
                     code: "updated-json",
                     data: parsedData
                 }
-            }), true);
+            }, true);
             window.location.href = 'https://wa.me/+94773233440?text=continue';
             return;
         }
@@ -66,12 +66,12 @@ window.addEventListener('message', function (eventData) {
         
         if (parsedData?.event_code == 'custom-parenttoroot-recent-order-event') {
             console.log("\n\n\n <--- Fetch recent orders received in parent iframe ---> \n\n\n", parsedData);
-            window.frames.ymIframe.chat.send(JSON.stringify({
+            window.frames.ymIframe.chat.send({
                 event: {
                     code: "fetch_recent_orders",
                     data: parsedData
                 }
-            }), true);
+            }, true);
             return;
         }
 
