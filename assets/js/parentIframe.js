@@ -55,12 +55,12 @@ window.addEventListener('message', function (eventData) {
 
         if (parsedData?.event_code == 'custom-parenttoroot-checkout-event') {
             console.log("\n\n\n <--- Checkout event received in parent iframe ---> \n\n\n", parsedData);
-            window.frames.ymIframe.chat.send(JSON.stringify({
+            window.frames.ymIframe.chat.send({
                 event: {
                     code: "applied_coupons",
                     data: parsedData
                 }
-            }), true);
+            }, true);
             return;
         }
         
