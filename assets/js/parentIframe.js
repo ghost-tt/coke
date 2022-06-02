@@ -53,14 +53,18 @@ window.addEventListener('message', function (eventData) {
             return;
         }
 
+        var utc = Date.now();
+
         if (parsedData?.event_code == 'custom-parenttoroot-checkout-event') {
             console.log("\n\n\n <--- Checkout event received in parent iframe ---> \n\n\n", parsedData);
             window.frames.ymIframe.chat.send({
                 event: {
                     code: "applied_coupons",
-                    data: parsedData
+                    data: parsedData,
+                    time: utc
                 }
             }, true);
+            app.log(utc, 'Event Timming-----')
             return;
         }
         
