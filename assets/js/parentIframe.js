@@ -16,28 +16,28 @@ window.addEventListener('message', function (eventData) {
         let parsedData = JSON.parse(eventData.data)
         if (parsedData?.event_code == 'custom-event' && parsedData?.data?.code == "all_lables") {
             console.log("\n\n\n <--- All products received in parent iframe ---> \n\n\n", parsedData);
-            window.frames.ymIframe.chat.send(JSON.stringify({
+            document.getElementById('ymIframe').contentWindow.postMessage(JSON.stringify({
                 event_code: 'custom-parent-client-event',
                 data: parsedData.data.data
-            }), true);
+            }), '*');
             return;
         }
 
         if (parsedData?.event_code == 'custom-event' && parsedData?.data?.code == "applied_coupons_YM") {
             console.log("\n\n\n <--- Applied coupons received in parent iframe ---> \n\n\n", parsedData);
-            window.frames.ymIframe.chat.send(JSON.stringify({
+            document.getElementById('ymIframe').contentWindow.postMessage(JSON.stringify({
                 event_code: 'custom-parent-client-checkout-event',
                 data: parsedData.data.data
-            }), true);
+            }), '*');
             return;
         }
 
         if (parsedData?.event_code == 'custom-event' && parsedData?.data?.code == "recent_order_YM") {
             console.log("\n\n\n <--- Recent order data received in parent iframe ---> \n\n\n", parsedData);
-            window.frames.ymIframe.chat.send(JSON.stringify({
+            document.getElementById('ymIframe').contentWindow.postMessage(JSON.stringify({
                 event_code: 'custom-parent-client-recent-order-event',
                 data: parsedData.data.data
-            }), true);
+            }), '*');
             return;
         }
 
