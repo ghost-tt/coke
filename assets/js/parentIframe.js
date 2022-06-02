@@ -43,45 +43,41 @@ window.addEventListener('message', function (eventData) {
 
         if (parsedData?.event_code == 'custom-parenttoroot-client-event' && parsedData?.data) {
             console.log("\n\n\n <--- Applied coupons received in parent iframe ---> \n\n\n", parsedData);
-            document.getElementById('ymIframe').contentWindow.postMessage(JSON.stringify({
-                event_code: 'ym-client-event',
-                data: {
-                    event: {
-                     code: "updated-json",
-                     data: parsedData
-                    }
+            window.frames.ymIframe.chat.send(JSON.stringify({
+                event: {
+                    code: "updated-json",
+                    data: parsedData
                 }
-           }), '*');
-            window.location.href= 'https://wa.me/+94773233440?text=continue';
+            }), true);
+            window.location.href = 'https://wa.me/+94773233440?text=continue';
             return;
         }
 
         if (parsedData?.event_code == 'custom-parenttoroot-checkout-event') {
             console.log("\n\n\n <--- Checkout event received in parent iframe ---> \n\n\n", parsedData);
-
-            document.getElementById('ymIframe').contentWindow.postMessage(JSON.stringify({
-                event_code: 'ym-client-event',
-                data: {
-                    event: {
-                     code: "applied_coupons",
-                     data: parsedData
-                    }
+            window.frames.ymIframe.chat.send(JSON.stringify({
+                event: {
+                    code: "applied_coupons",
+                    data: parsedData
                 }
-            }), 'https://app.yellowmessenger.com');
+            }), true);
+            return;
+        }
+        
+        if (parsedData?.event_code == 'custom-parenttoroot-recent-order-event') {
+            console.log("\n\n\n <--- Fetch recent orders received in parent iframe ---> \n\n\n", parsedData);
+            window.frames.ymIframe.chat.send(JSON.stringify({
+                event: {
+                    code: "fetch_recent_orders",
+                    data: parsedData
+                }
+            }), true);
             return;
         }
 
-        if (parsedData?.event_code == 'custom-parenttoroot-recent-order-event') {
-            console.log("\n\n\n <--- Fetch recent orders received in parent iframe ---> \n\n\n", parsedData);
-            document.getElementById('ymIframe').contentWindow.postMessage(JSON.stringify({
-                event_code: 'ym-client-event',
-                data: {
-                    event: {
-                     code: "fetch_recent_orders",
-                     data: parsedData
-                    }
-                }
-           }), '*');
+        if (parsedData?.event_code == 'session-timedout-webapp-childframe') {
+            console.log("\n\n\n <--- Session Timed out parent frame ---> \n\n\n");
+            this.window.location.reload();
             return;
         }
 
