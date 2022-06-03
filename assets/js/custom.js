@@ -898,7 +898,7 @@ function updateProductsBasedOnProducts(node, type) {
         let data = products[key].product_data;
         for (var i = 0; i < products[key].quantity; i++) {
             if (type === "add") {
-                if (data.itemspercase <= parseInt(products[key].quantity)) {
+                if(parseInt(products[key].quantity) > data.itemspercase) {
                     console.log('at line 901')
                     showToastMessage(data.itemspercase);
                     $(orderhistoryNode).show();
