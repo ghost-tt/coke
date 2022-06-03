@@ -620,10 +620,12 @@ function switchTabs(id) {
 
 
 function addProducts(quantityInput) {
+    console.log('IN addproduct Fn')
     let siblingWrapper = $(quantityInput).siblings(".counter__wrapper");
     let productData = $(quantityInput).attr("product");
     let decodedProductData = JSON.parse(decodeURIComponent(productData));
     if (cartData && Object.keys(cartData).length !== 0 && cartData[decodedProductData.sku]?.quantity >= decodedProductData?.itemspercase) {
+        console.log('IN addproduct Fn 628')
         showToastMessage(decodedProductData.itemspercase);
         return false;
     }
@@ -645,11 +647,13 @@ function updateCounter(counterInput, type, requestFrom, bulkType) {
         let productData = $(counterInput).attr("product");
         let decodedProductData = JSON.parse(decodeURIComponent(productData));
         if (cartData && Object.keys(cartData).length !== 0 && cartData[decodedProductData.sku]?.quantity > decodedProductData?.itemspercase) {
+            console.log('If1: IN updateCounter Fn');
             showToastMessage(decodedProductData.itemspercase);
             return false;
         }
 
         if (decodedProductData.itemspercase <= parseInt($input.val())) {
+            console.log('If2: IN updateCounter Fn');
             showToastMessage(decodedProductData.itemspercase);
             return false;
         }
@@ -895,6 +899,7 @@ function updateProductsBasedOnProducts(node, type) {
         for (var i = 0; i < products[key].quantity; i++) {
             if (type === "add") {
                 if (data.itemspercase <= parseInt(products[key].quantity)) {
+                    console.log('at line 901')
                     showToastMessage(data.itemspercase);
                     $(orderhistoryNode).show();
                     $(node).hide();
