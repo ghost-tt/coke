@@ -623,7 +623,7 @@ function addProducts(quantityInput) {
     let siblingWrapper = $(quantityInput).siblings(".counter__wrapper");
     let productData = $(quantityInput).attr("product");
     let decodedProductData = JSON.parse(decodeURIComponent(productData));
-    if (cartData && Object.keys(cartData).length !== 0 && cartData[decodedProductData.sku]?.quantity > decodedProductData?.itemspercase) {
+    if (cartData && Object.keys(cartData).length !== 0 && cartData[decodedProductData.sku]?.quantity >= decodedProductData?.itemspercase) {
         showToastMessage(decodedProductData.itemspercase);
         return false;
     }
@@ -644,7 +644,7 @@ function updateCounter(counterInput, type, requestFrom, bulkType) {
         var $input = $(siblingWrapper);
         let productData = $(counterInput).attr("product");
         let decodedProductData = JSON.parse(decodeURIComponent(productData));
-        if (cartData && Object.keys(cartData).length !== 0 && cartData[decodedProductData.sku]?.quantity >= decodedProductData?.itemspercase) {
+        if (cartData && Object.keys(cartData).length !== 0 && cartData[decodedProductData.sku]?.quantity > decodedProductData?.itemspercase) {
             showToastMessage(decodedProductData.itemspercase);
             return false;
         }
