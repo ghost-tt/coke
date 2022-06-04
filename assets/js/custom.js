@@ -890,14 +890,17 @@ function updateProductsBasedOnProducts(node, type) {
     let productDataa = $(node).attr("product");
     let decodedProductDataa = JSON.parse(decodeURIComponent(productDataa));
     let products = decodedProductDataa.products;
+    let count = 0;
     for (const key in products) {
+        count++;
         let data = products[key].product_data;
-        for (var i = 0; i < products[key].quantity; i++) {
+        for (let i = 0; i < products[key].quantity; i++) {
             if (type === "add") {
                 if (data.itemspercase <= parseInt(products[key].quantity)) {
                     showToastMessage(data.itemspercase);
                     $(orderhistoryNode).show();
                     $(node).hide();
+                    passDataToBot(cartData);
                     return false;
                 }
                 orderhistoryNode = $(node).siblings(".counter__wrapper.orderhistory");
@@ -920,7 +923,10 @@ function updateProductsBasedOnProducts(node, type) {
                 $("#numberCircle").attr("value", updatedValue);
                 $("#numberCircle").text(updatedValue);
             }
-            updateCheckoutCartData(data, type);
+            updateCheckoutCartData(data, type, "bulk");
+            if(count === Object.keys(products).length && i === products[key].quantity - 1) {
+                passDataToBot(cartData);
+            }
         }
         // processQ({[key] : data}, key);
 
