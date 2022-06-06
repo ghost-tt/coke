@@ -302,7 +302,9 @@
 }
 
 .counter__container .counter__minus,
-.counter__container .counter__plus {
+.counter__container .counter__plus,
+.counter__container .counter__minus-brand,
+.counter__container .counter__plus-brand {
     width: 14px;
     height: 14px;
     display: flex;

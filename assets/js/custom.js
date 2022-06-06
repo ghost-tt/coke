@@ -321,7 +321,7 @@ function insertProducts(products, sortedBy) {
     });
 }
 
-function insertInnerProducts(products) {
+function insertInnerProducts(products, sortBy) {
     products.map((product, index) => {
         let listitem = "#products_container_inner" + index;
         product.items.map((item) => {
@@ -340,25 +340,25 @@ function insertInnerProducts(products) {
                             <p class="product__quantity">${item.description}</p>
                             <p class="product__price">Rs. ${numberWithCommas(item.price)}</p>
                         </div>
-                        <div isdisabled=${isdisabled} class="product-bottom-details" id="promotions-add-${item.sku}" product="${encodeURIComponent(JSON.stringify(item))}">
+                        <div isdisabled=${isdisabled} class=${`product-bottom-details${sortBy ? "-brand" : ""}`} id="promotions-add-${item.sku}" product="${encodeURIComponent(JSON.stringify(item))}">
                             <div class="btn inner" isdisabled=${isdisabled}>${btnName}</div>
                         </div>
                         <div class="counter__wrapper hide" id="promotions-counter-${item.sku}">
                             <div class="counter__container">
                                 <div class="counter__box__container">
-                                    <div class="counter__minus" id="minus" product="${encodeURIComponent(JSON.stringify(item))}">
+                                    <div class=${`counter__minus${sortBy ? "-brand" : ""}`} id="minus" product="${encodeURIComponent(JSON.stringify(item))}">
                                         <img src="/coke/assets/images/png/minus.png"/>
                                     </div>
                                 </div>
                             
                                 <input id="counter_input_${item.sku}" class="counter__input home" type="text" value="1" size="2" maxlength="2" autocomplete="off" previous-value="1" />
                                 <div class="counter__box__container">
-                                    <div class="counter__plus" id="plus" product="${encodeURIComponent(JSON.stringify(item))}">
+                                    <div class=${`counter__plus${sortBy ? "-brand" : ""}`} id="plus" product="${encodeURIComponent(JSON.stringify(item))}">
                                         <img src="/coke/assets/images/png/plus.png" />
                                     </div>
                                 </div>
                                 <div class="addmore__qty">
-                                    <div class="submit" product="${encodeURIComponent(JSON.stringify(item))}">
+                                    <div class=${`submit${sortBy ? "-brand" : ""}`} product="${encodeURIComponent(JSON.stringify(item))}">
                                         <img src="/coke/assets/images/svg/icons8-ok.svg" />
                                     </div>
                                 </div>
@@ -719,7 +719,7 @@ function updateDropDownMenu(dpItem) {
     // let products = sortProducts(config.products, dpItemAttr.sortBy);
     let sortedBy = dpItemAttr.sortBy === "volume" ? "volume_name" : dpItemAttr.sortBy;
     insertProducts(sortedProducts, sortedBy);
-    insertInnerProducts(sortedProducts);
+    insertInnerProducts(sortedProducts, "brand");
     if (cartData && Object.keys(cartData).length !== 0) {
         for (let key in cartData) {
             $(`#promotions-add-${key}`).hide();
@@ -728,26 +728,84 @@ function updateDropDownMenu(dpItem) {
             $(`#counter_input_${key}`).change();
             $(`#counter_input_${key}`).attr("previous-value", parseInt(cartData[key].quantity) - 1 > 0 ? parseInt(cartData[key].quantity) - 1 : 0);
         }
-
-        $('.counter__minus').click(function (e) {
-            e.preventDefault();
-            e.stopPropagation();
-            updateCounter(this, "minus");
-        });
-
-        $('.counter__plus').click(function (e) {
-            e.preventDefault();
-            e.stopPropagation();
-            updateCounter(this, "add");
-        });
-
-        $('.product-bottom-details').click(function (e) {
-            e.preventDefault();
-            e.stopPropagation();
-            addProducts(this)
-        });
     }
 
+    $('.product-bottom-details-brand').click(function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        addProducts(this)
+    });
+
+    $('.counter__minus-brand').click(function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        updateCounter(this, "minus");
+    });
+
+    $('.counter__plus-brand').click(function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        updateCounter(this, "add");
+    });
+    
+    $('input').blur(function () {
+        setTimeout(() => {
+            if (this.type === "search") return;
+            $(this).val($(this).attr("previous-value"));
+            $($(this).siblings()[0]).fadeIn("slow").show();
+            $($(this).siblings()[1]).fadeIn("slow").show();
+            $(this).siblings(".addmore__qty").css("opacity", "0");
+            $(this).siblings(".addmore__qty").css("display", "none");
+            emptySearch();
+        }, 500);
+    });
+
+    $('input').focus(function () {
+        if (this.type === "search") return;
+        $($(this).siblings()[0]).fadeIn("slow").hide();
+        $($(this).siblings()[1]).fadeIn("slow").hide();
+        $(this).siblings(".addmore__qty").css("opacity", "1");
+        $(this).siblings(".addmore__qty").css("display", "block");
+        emptySearch();
+    });
+
+    $('input').on('input', function () {
+        if (this.type === "search") return;
+        this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1').replace(/^0[^.]/, '0');
+        return;
+    });
+
+    $('.submit-brand').click(function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        let counterInput = $(this).parent().siblings(".counter__input");
+        let currentValue = $(counterInput).val();
+        let previousValue = $(counterInput).attr("previous-value");
+        $(counterInput).val(parseInt(previousValue));
+        $(counterInput).change();
+        $($(this).parent().siblings()[0]).fadeIn("slow").show();
+        $($(this).parent().siblings()[2]).fadeIn("slow").show();
+        $(this).parent(".addmore__qty").css("opacity", "0");
+        $(this).parent(".addmore__qty").css("display", "none");
+
+        if (currentValue != 0) {
+            let productData = $(this).attr("product");
+            let decodedProductData = JSON.parse(decodeURIComponent(productData));
+            delete cartData[decodedProductData.sku];
+            counterInput.val(0);
+            counterInput.change();
+            counterInput.attr("previous-value", 0);
+            let numberCircleCount = $("#numberCircle").attr("value");
+            let parseCount = Number(numberCircleCount)
+            let updatedValue = parseCount - previousValue;
+            $("#numberCircle").attr("value", updatedValue);
+            $("#numberCircle").text(updatedValue);
+            for (let i = 0; i < currentValue; i++) {
+                updateCounter($($(counterInput).siblings()[1]).children()[0], "add", "", "bulk");
+            }
+            passDataToBot(cartData, "bulk");
+        }
+    });
 }
 
 function groupProductsByCategory(productsItemsJson, sortBy) {

@@ -455,7 +455,8 @@
     line-height: 14px;
 }
 
-.products__container .product-card .product__details .product-bottom-details[isdisabled="true"] {
+.products__container .product-card .product__details .product-bottom-details[isdisabled="true"],
+.products__container .product-card .product__details .product-bottom-details-brand[isdisabled="true"] {
     pointer-events: none;
 }
 
