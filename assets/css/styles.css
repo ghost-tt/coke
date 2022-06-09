@@ -387,8 +387,8 @@
 .products__container .product-card .product-tumb .img__wrapper {
     max-width: 100%;
     max-height: 100%;
-    height: auto;
-    width: auto;
+/*     height: auto;
+    width: auto; */
     position: absolute;
     top: 0;
     left: 0;
@@ -396,7 +396,7 @@
     bottom: 0;
     /* padding: 16px 21px 20px 21px; */
     margin: auto;
-    padding: 22px 26px 22px 25px;
+/*     padding: 22px 26px 22px 25px; */
 }
 
 .products__container .product-card .product-tumb .img__wrapper.inner {
