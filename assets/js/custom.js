@@ -1,4 +1,10 @@
-var config = {};
+var config = config ? config : {};
+
+(function () {
+    setTimeout(() => {
+        loadPageContent("homepage", config);
+    }, 500);
+})();
 
 function loadPageContent(page, data) {
     config = data;
@@ -287,9 +293,7 @@ function insertFilterBar() {
 
 function insertProducts(products, sortedBy) {
     let iconValue = sortedBy === "volume_name" ? "icon" : "bybrandsIcons";
-    console.log("icon value --> ", iconValue);
     products.map((product, index) => {
-        console.log("icon inner ", product[iconValue]);
         $("#product_item_container").append(`
             <div class="faq-drawer">
                 <input class="faq-drawer__trigger" id=${"faq-drawer" + "-" + index} type="checkbox" autocomplete="off"/>
@@ -383,10 +387,6 @@ function saveInput(node) {
     var filter = "keywords";
     var keyword = node.value;
     var filteredData = getAllProducts.filter(function (obj) {
-        console.log("\n\n\n search \n\n\n");
-        console.log(obj[filter]);
-        console.log(keyword.toLowerCase());
-
         if (obj[filter] != "") {
             return obj[filter].includes(keyword.toLowerCase());
         }
@@ -620,12 +620,10 @@ function switchTabs(id) {
 
 
 function addProducts(quantityInput) {
-    console.log('IN addproduct Fn')
     let siblingWrapper = $(quantityInput).siblings(".counter__wrapper");
     let productData = $(quantityInput).attr("product");
     let decodedProductData = JSON.parse(decodeURIComponent(productData));
     if (cartData && Object.keys(cartData).length !== 0 && cartData[decodedProductData.sku]?.quantity >= decodedProductData?.itemspercase) {
-        console.log('IN addproduct Fn 628')
         showToastMessage(decodedProductData.itemspercase);
         return false;
     }
@@ -647,13 +645,11 @@ function updateCounter(counterInput, type, requestFrom, bulkType) {
         let productData = $(counterInput).attr("product");
         let decodedProductData = JSON.parse(decodeURIComponent(productData));
         if (cartData && Object.keys(cartData).length !== 0 && cartData[decodedProductData.sku]?.quantity > decodedProductData?.itemspercase) {
-            console.log('If1: IN updateCounter Fn');
             showToastMessage(decodedProductData.itemspercase);
             return false;
         }
 
         if (decodedProductData.itemspercase <= parseInt($input.val())) {
-            console.log('If2: IN updateCounter Fn');
             showToastMessage(decodedProductData.itemspercase);
             return false;
         }
@@ -959,7 +955,6 @@ function updateProductsBasedOnProducts(node, type) {
         for (let i = 0; i < products[key].quantity; i++) {
             if (type === "add") {
                 if(parseInt(products[key].quantity) > data.itemspercase) {
-                    console.log('at line 901')
                     showToastMessage(data.itemspercase);
                     $(orderhistoryNode).show();
                     $(node).hide();

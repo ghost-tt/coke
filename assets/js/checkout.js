@@ -1,6 +1,10 @@
-var config = {};
+var config = config ? config : {};
 var orderCartData = {};
 var discountPrice = 0;
+
+(function () {
+    loadCheckoutPageContent("checkoutpage", config);
+})();
 
 function loadCheckoutPageContent(page, data) {
     config = data;
@@ -291,6 +295,7 @@ function insertSelectedCoupon(discountData, type, data) {
 } */
 
 function insertDistributorAddress() {
+    console.log(config.checkout)
     $("#distributor_details_container").append(`
         <div class="title">Distributor Details</div>
         <div class="summary__wrapper">
