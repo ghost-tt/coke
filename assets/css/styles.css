@@ -196,7 +196,7 @@
     height: 120px;
     margin: 0 10px;
     border-radius: 6px;
-    background: url(/coke/assets/images/png/hero_banner.png);
+    background: url(/assets/images/png/hero_banner.png);
     background-color: #ccc;
 }
 
@@ -366,7 +366,7 @@
 }
 
 .products__container .product-card .product-tumb .icon {
-    /* background: url(/coke/assets/images/png/product_img.png);
+    /* background: url(/assets/images/png/product_img.png);
     position: absolute;
     top: 0;
     right: 0;
@@ -377,7 +377,7 @@
     justify-content: center;
     align-items: center;
     width: 100%; */
-    background: url("/coke/assets/images/png/product_card_bg.svg");
+    background: url("/assets/images/png/product_card_bg.svg");
     height: 100%;
     width: 100%;
     background-size: cover;

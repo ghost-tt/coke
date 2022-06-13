@@ -1,40 +1,40 @@
 @font-face {
     font-family: "Unity";
-    src: url("/coke/assets/fonts/Unity/Unity-Regular.ttf");
+    src: url("/assets/fonts/Unity/Unity-Regular.ttf");
     font-style: normal;
     font-weight: 400;
 }
 
 @font-face {
     font-family: "Unity";
-    src: url("/coke/assets/fonts/Unity/Unity-Italic.ttf");
+    src: url("/assets/fonts/Unity/Unity-Italic.ttf");
     font-style: italic;
     font-weight: 400;
 }
 
 @font-face {
     font-family: "Unity";
-    src: url("/coke/assets/fonts/Unity/Unity-Bold.ttf");
+    src: url("/assets/fonts/Unity/Unity-Bold.ttf");
     font-style: bold;
     font-weight: 900;
 }
 
 @font-face {
     font-family: "Unity";
-    src: url("/coke/assets/fonts/Unity/Unity-BoldItalic.ttf");
+    src: url("/assets/fonts/Unity/Unity-BoldItalic.ttf");
     font-weight: 900;
     font-style: italic;
 }
 
 @font-face {
     font-family: "Unity Condensed";
-    src: url("/coke/assets/fonts/UnityCondensed/UnityCond-Bold.ttf");
+    src: url("/assets/fonts/UnityCondensed/UnityCond-Bold.ttf");
 }
 
 @font-face {
     font-family: "Unity Condensed";
     font-weight: 400;
-    src: url("/coke/assets/fonts/UnityCondensed/UnityCond-Regular.ttf");
+    src: url("/assets/fonts/UnityCondensed/UnityCond-Regular.ttf");
 }
 
 * {

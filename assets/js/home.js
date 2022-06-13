@@ -1,6 +1,6 @@
 $(function () {
-    $("#bodyContent").load("/coke//views/body.html");
-    $("#checkoutcart").load("/coke//views/checkout.html");
+    $("#bodyContent").load("/views/body.html");
+    $("#checkoutcart").load("/views/checkout.html");
 });
 
 function renderPage(page, sectionToScroll) {

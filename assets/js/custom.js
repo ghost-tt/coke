@@ -171,19 +171,19 @@ function insertPromotionsContainer() {
                         <div class="counter__container">
                             <div class="counter__box__container">
                                 <div class="counter__minus" id="minus" product="${encodeURIComponent(JSON.stringify(promotion))}">
-                                    <img src="/coke/assets/images/png/minus.png" />
+                                    <img src="/assets/images/png/minus.png" />
                                 </div>
                             </div>
                         
                             <input id="counter_input_${promotion.sku}" class="counter__input home" type="text" value="1" size="2" maxlength="2" autocomplete="off" previous-value="1" />
                             <div class="counter__box__container">
                                 <div class="counter__plus" id="plus" product="${encodeURIComponent(JSON.stringify(promotion))}">
-                                    <img src="/coke/assets/images/png/plus.png" />
+                                    <img src="/assets/images/png/plus.png" />
                                 </div>
                             </div>
                             <div class="addmore__qty">
                                 <div class="submit" product="${encodeURIComponent(JSON.stringify(promotion))}">
-                                    <img src="/coke/assets/images/svg/icons8-ok.svg" />
+                                    <img src="/assets/images/svg/icons8-ok.svg" />
                                 </div>
                             </div>
                         </div>
@@ -347,19 +347,19 @@ function insertInnerProducts(products, sortBy) {
                             <div class="counter__container">
                                 <div class="counter__box__container">
                                     <div class=${`counter__minus${sortBy ? "-brand" : ""}`} id="minus" product="${encodeURIComponent(JSON.stringify(item))}">
-                                        <img src="/coke/assets/images/png/minus.png"/>
+                                        <img src="/assets/images/png/minus.png"/>
                                     </div>
                                 </div>
                             
                                 <input id="counter_input_${item.sku}" class="counter__input home" type="text" value="1" size="2" maxlength="2" autocomplete="off" previous-value="1" />
                                 <div class="counter__box__container">
                                     <div class=${`counter__plus${sortBy ? "-brand" : ""}`} id="plus" product="${encodeURIComponent(JSON.stringify(item))}">
-                                        <img src="/coke/assets/images/png/plus.png" />
+                                        <img src="/assets/images/png/plus.png" />
                                     </div>
                                 </div>
                                 <div class="addmore__qty">
                                     <div class=${`submit${sortBy ? "-brand" : ""}`} product="${encodeURIComponent(JSON.stringify(item))}">
-                                        <img src="/coke/assets/images/svg/icons8-ok.svg" />
+                                        <img src="/assets/images/svg/icons8-ok.svg" />
                                     </div>
                                 </div>
                             </div>
@@ -419,19 +419,19 @@ function searchProducts(node) {
                         <div class="counter__container checkout">
                             <div class="counter__box__container">
                                 <div class="counter__minus search" id="minus" product="${encodeURIComponent(JSON.stringify(item))}">
-                                    <img src="/coke/assets/images/png/minus.png" />
+                                    <img src="/assets/images/png/minus.png" />
                                 </div>
                             </div>
                         
                             <input id="counter_input_${item.sku}" class="counter__input search" type="text" value=${cartData[item.sku] ? cartData[item.sku].quantity : "1"} size="2" maxlength="2" autocomplete="off" previous-value="1" />
                             <div class="counter__box__container">
                                 <div class="counter__plus search" id="plus" product="${encodeURIComponent(JSON.stringify(item))}">
-                                    <img src="/coke/assets/images/png/plus.png" />
+                                    <img src="/assets/images/png/plus.png" />
                                 </div>
                             </div>
                             <div class="addmore__qty searchbox">
                                 <div class="submit search" product="${encodeURIComponent(JSON.stringify(item))}">
-                                    <img src="/coke/assets/images/svg/icons8-ok.svg" />
+                                    <img src="/assets/images/svg/icons8-ok.svg" />
                                 </div>
                             </div>
                         </div>

@@ -61,19 +61,19 @@ function insertOrderCart(orderCart, skuid) {
                             <div class="counter__container checkout">
                                 <div class="counter__box__container">
                                     <div class="counter__minus" id="minus" product="${encodeURIComponent(JSON.stringify(product))}" onclick="updateCounterDataFromCheckout('minus')">
-                                        <img src="/coke/assets/images/png/minus.png" />
+                                        <img src="/assets/images/png/minus.png" />
                                     </div>
                                 </div>
                             
                                 <input id="counter_input_${product.sku}" class="counter__input checkout" type="text" value='${orderCart[skuid]["quantity"]}' size="2" maxlength="2" autocomplete="off" previous-value=${orderCart[skuid]["quantity"]} />
                                 <div class="counter__box__container">
                                     <div class="counter__plus" id="plus" product="${encodeURIComponent(JSON.stringify(product))}" onclick="updateCounterDataFromCheckout('add')">
-                                        <img src="/coke/assets/images/png/plus.png" />
+                                        <img src="/assets/images/png/plus.png" />
                                     </div>
                                 </div>
                                 <div class="addmore__qty checkout">
                                     <div class="submit checkout" product="${encodeURIComponent(JSON.stringify(product))}">
-                                        <img src="/coke/assets/images/svg/icons8-ok.svg" />
+                                        <img src="/assets/images/svg/icons8-ok.svg" />
                                     </div>
                                 </div>
                             </div>
@@ -113,19 +113,19 @@ function insertOrderCart(orderCart, skuid) {
                         <div class="counter__container checkout">
                             <div class="counter__box__container">
                                 <div class="counter__minus" id="minus" product="${encodeURIComponent(JSON.stringify(product))}" onclick="updateCounterDataFromCheckout('minus')">
-                                    <img src="/coke/assets/images/png/minus.png" />
+                                    <img src="/assets/images/png/minus.png" />
                                 </div>
                             </div>
                         
                             <input id="counter_input_${product.sku}" class="counter__input checkout" type="text" value="1" size="2" maxlength="2" autocomplete="off" previous-value=${orderCart[skuid]["quantity"]} />
                             <div class="counter__box__container">
                                 <div class="counter__plus" id="plus" product="${encodeURIComponent(JSON.stringify(product))}" onclick="updateCounterDataFromCheckout('add')">
-                                    <img src="/coke/assets/images/png/plus.png" />
+                                    <img src="/assets/images/png/plus.png" />
                                 </div>
                             </div>
                             <div class="addmore__qty checkout">
                                 <div class="submit checkout" product="${encodeURIComponent(JSON.stringify(product))}">
-                                    <img src="/coke/assets/images/svg/icons8-ok.svg" />
+                                    <img src="/assets/images/svg/icons8-ok.svg" />
                                 </div>
                             </div>
                         </div>
@@ -256,7 +256,7 @@ function insertSelectedCoupon(discountData, type, data) {
                         <div class="offer__bar__box">
                             <div class="offer__name__box">
                                 <div class="icon">
-                                    <img src="/coke/assets/images/svg/discount_coke_ico.svg" />
+                                    <img src="/assets/images/svg/discount_coke_ico.svg" />
                                 </div>
                                 <div class="name">${discount.name}</div>
                             </div>
