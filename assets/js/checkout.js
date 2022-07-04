@@ -36,7 +36,8 @@ function loadCheckoutPageContent(page, data) {
 
 function insertOrderCart(orderCart, skuid) {
     if (Object.keys($(`#${skuid}`)).length !== 0) {
-        let product = orderCart[skuid]["product_data"]
+        let product = orderCart[skuid]["product_data"];
+        let productPrice = region ? product[`price_${region.toLowerCase()}`] : product.price;
         let type = orderCart[skuid]["product_data"]["listing_type"];
         if (type) {
             type = `- ${type}`
@@ -49,7 +50,7 @@ function insertOrderCart(orderCart, skuid) {
                     <div class="details__section">
                         <div class="name">${product.name} ${type}</div>
                         <div class="discount__offer">
-                            <span class="price">Rs. ${numberWithCommas(product.price)}</span>
+                            <span class="price">Rs. ${numberWithCommas(productPrice)}</span>
                         </div>
                         <div class="discount__detail">${product.discount_detail}</div>
                         <div class="discount__detail__bar">
@@ -295,7 +296,6 @@ function insertSelectedCoupon(discountData, type, data) {
 } */
 
 function insertDistributorAddress() {
-    console.log(config.checkout)
     $("#distributor_details_container").append(`
         <div class="title">Distributor Details</div>
         <div class="summary__wrapper">

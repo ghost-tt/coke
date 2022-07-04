@@ -1,4 +1,7 @@
 var config = config ? config : {};
+var country = config.country;
+var region = config.region;
+var language = config.language;
 
 (function () {
     setTimeout(() => {
@@ -12,10 +15,7 @@ function loadPageContent(page, data) {
         insertSearchBar();
         insertTabContainer();
         insertPromotionsContainer();
-        // JAY
-        // insertOrderHistoryProducts();
         insertFilterBar();
-
         let sortedProducts = groupProductsByCategory(config.products, "volume");
         insertProducts(sortedProducts, "volume_name");
         insertInnerProducts(sortedProducts);
@@ -156,6 +156,7 @@ function insertPromotionsContainer() {
     config.promotions.products.map((promotion) => {
         let isdisabled = promotion.quantity_available ? false : true;
         let btnName = isdisabled ? "Out of stock" : "ADD";
+        let promotionPrice = region ? promotion[`price_${region.toLowerCase()}`] : promotion.price;
         $("#promotions_products_container").append(`
             <div class="product-card">
                 <div class="product-tumb">
@@ -168,7 +169,7 @@ function insertPromotionsContainer() {
                         <p class="product__quantity">${promotion.description}</p>
                         ${promotion.description.length > 60 ? `<div class="readmore">read more</div>` : ""}
                         <div class="readless hide">read less</div>
-                        <p class="product__price">Rs. ${numberWithCommas(promotion.price)}</p>
+                        <p class="product__price">Rs. ${numberWithCommas(promotionPrice)}</p>
                     </div>
                     <div isdisabled=${isdisabled} class="product-bottom-details" id="promotions-add-${promotion.sku}" product="${encodeURIComponent(JSON.stringify(promotion))}">
                         <div class="btn" isdisabled=${isdisabled}>${btnName}</div>
@@ -331,6 +332,7 @@ function insertInnerProducts(products, sortBy) {
         product.items.map((item) => {
             let isdisabled = item.quantity_available ? false : true;
             let btnName = isdisabled ? "Out of stock" : "ADD";
+            let itemPrice = region ? item[`price_${region.toLowerCase()}`] : item.price;
             $(listitem).append(`
                 <div class="product-card">
                     <div class="product-tumb inner">
@@ -342,7 +344,7 @@ function insertInnerProducts(products, sortBy) {
                         <div class="product__text__wrapper">
                             <p class="product__name">${item.name} - ${item.listing_type}</p>
                             <p class="product__quantity">${item.description}</p>
-                            <p class="product__price">Rs. ${numberWithCommas(item.price)}</p>
+                            <p class="product__price">Rs. ${numberWithCommas(itemPrice)}</p>
                         </div>
                         <div isdisabled=${isdisabled} class=${`product-bottom-details${sortBy ? "-brand" : ""}`} id="promotions-add-${item.sku}" product="${encodeURIComponent(JSON.stringify(item))}">
                             <div class="btn inner" isdisabled=${isdisabled}>${btnName}</div>
@@ -404,12 +406,13 @@ function searchProducts(node) {
     node.map((item) => {
         let isdisabled = item.quantity_available ? false : true;
         let btnName = isdisabled ? "Out of stock" : "ADD";
+        let itemPrice = region ? item[`price_${region.toLowerCase()}`] : item.price;
         $("#search_product_wrap").append(`
             <div class="product searchproducts">
                 <div class="left__wrapper">
                     <div class="name">${item.name} - ${item.listing_type}</div>
                     <div class="description">${item.description}</div>
-                    <div class="price">Rs. ${numberWithCommas(item.price)}</div>
+                    <div class="price">Rs. ${numberWithCommas(itemPrice)}</div>
                 </div>
                 <div class="right__wrapper searchbox">
                     <div isdisabled=${isdisabled} class="product-bottom-details" id="promotions-add-searchbox-${item.sku}" product="${encodeURIComponent(JSON.stringify(item))}">
