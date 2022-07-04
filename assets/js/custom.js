@@ -156,7 +156,9 @@ function insertPromotionsContainer() {
     config.promotions.products.map((promotion) => {
         let isdisabled = promotion.quantity_available ? false : true;
         let btnName = isdisabled ? "Out of stock" : "ADD";
-        let promotionPrice = region ? promotion[`price_${region.toLowerCase()}`] : promotion.price;
+        let promotionPrice = region ? promotion[`price_${region.toLowerCase()}`] || promotion.price : promotion.price;
+        let productName = language ? promotion[`name_${language.toLowerCase()}`] || promotion.name : promotion.name;
+        let productDescription = language ? promotion[`description_${language.toLowerCase()}`] || promotion.description : promotion.description;
         $("#promotions_products_container").append(`
             <div class="product-card">
                 <div class="product-tumb">
@@ -165,8 +167,8 @@ function insertPromotionsContainer() {
                 </div>
                 <div class="product__details">
                     <div class="product__text__wrapper">
-                        <p class="product__name">${promotion.name}</p>
-                        <p class="product__quantity">${promotion.description}</p>
+                        <p class="product__name">${productName}</p>
+                        <p class="product__quantity">${productDescription}</p>
                         ${promotion.description.length > 60 ? `<div class="readmore">read more</div>` : ""}
                         <div class="readless hide">read less</div>
                         <p class="product__price">Rs. ${numberWithCommas(promotionPrice)}</p>
@@ -332,7 +334,10 @@ function insertInnerProducts(products, sortBy) {
         product.items.map((item) => {
             let isdisabled = item.quantity_available ? false : true;
             let btnName = isdisabled ? "Out of stock" : "ADD";
-            let itemPrice = region ? item[`price_${region.toLowerCase()}`] : item.price;
+            let itemPrice = region ? item[`price_${region.toLowerCase()}`] || item.price : item.price;
+            let productName = language ? item[`name_${language.toLowerCase()}`] || item.name : item.name;
+            let productDescription = language ? item[`description_${language.toLowerCase()}`] || item.description : item.description;
+            console.log(productDescription)
             $(listitem).append(`
                 <div class="product-card">
                     <div class="product-tumb inner">
@@ -342,8 +347,8 @@ function insertInnerProducts(products, sortBy) {
                     </div>
                     <div class="product__details inner">
                         <div class="product__text__wrapper">
-                            <p class="product__name">${item.name} - ${item.listing_type}</p>
-                            <p class="product__quantity">${item.description}</p>
+                            <p class="product__name">${productName} - ${item.listing_type}</p>
+                            <p class="product__quantity">${productDescription}</p>
                             <p class="product__price">Rs. ${numberWithCommas(itemPrice)}</p>
                         </div>
                         <div isdisabled=${isdisabled} class=${`product-bottom-details${sortBy ? "-brand" : ""}`} id="promotions-add-${item.sku}" product="${encodeURIComponent(JSON.stringify(item))}">
@@ -406,12 +411,14 @@ function searchProducts(node) {
     node.map((item) => {
         let isdisabled = item.quantity_available ? false : true;
         let btnName = isdisabled ? "Out of stock" : "ADD";
-        let itemPrice = region ? item[`price_${region.toLowerCase()}`] : item.price;
+        let itemPrice = region ? item[`price_${region.toLowerCase()}`] || item.price : item.price;
+        let productName = language ? item[`name_${language.toLowerCase()}`] || item.name : item.name;
+        let productDescription = language ? item[`description_${language.toLowerCase()}`] || item.description : item.description;
         $("#search_product_wrap").append(`
             <div class="product searchproducts">
                 <div class="left__wrapper">
-                    <div class="name">${item.name} - ${item.listing_type}</div>
-                    <div class="description">${item.description}</div>
+                    <div class="name">${productName} - ${item.listing_type}</div>
+                    <div class="description">${productDescription}</div>
                     <div class="price">Rs. ${numberWithCommas(itemPrice)}</div>
                 </div>
                 <div class="right__wrapper searchbox">
